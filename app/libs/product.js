@@ -10,4 +10,4 @@ export const product = {
         { value: "coklat", label: "Coklat" },
         { value: "kuning", label: "Kuning" }
     ]
-}
+};
