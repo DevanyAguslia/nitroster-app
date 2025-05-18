@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { cartItems } from "./libs/cartItems";
-import Checkout from "./components/Checkout";
+import { cartItems } from "../libs/cartItems";
+import Checkout from "../components/Checkout";
 import { useEffect, useState } from "react";
 
-export default function Home() {
+export default function Payment() {
   const [cartProducts, setCartProducts] = useState(cartItems);
 
   useEffect(() => {
@@ -116,7 +116,7 @@ export default function Home() {
       </main>
 
       {/* Bottom Navbar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white px-4 py-3 flex items-center justify-around shadow-lg border-t border-gray-200">
+      <nav className="bg-white px-4 py-3 flex items-center justify-around shadow-inner">
         <Link href="/">
           <div className="flex flex-col items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
