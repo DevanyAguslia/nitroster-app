@@ -131,7 +131,7 @@ export default function LoginPage() {
           <div className="relative w-32 h-32 mb-2">
             <Image 
               src="/Logo.png" 
-              alt="NITROSTER Logo"
+              alt="NROSTER Logo"
               layout="fill"
               objectFit="contain"
               priority
