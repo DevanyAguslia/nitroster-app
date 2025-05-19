@@ -1,13 +1,85 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
 
 export default function Profile() {
+    const [name, setName] = useState("Melissa Peters");
+    const [email, setEmail] = useState("melpeters@gmail.com");
+
+    const handleSave = () => {
+        // Logika menyimpan data bisa dimasukkan di sini, misalnya API call
+        console.log("Saved name:", name);
+        console.log("Saved email:", email);
+        alert("Changes saved!");
+    };
+
     return (
-        <div className="flex flex-col min-h-screen w-full bg-gray-50">
-            {/* Main Content Placeholder */}
-            <main className="flex-1 flex items-center justify-center">
-                <h1 className="text-2xl font-bold text-gray-800">Profile Page</h1>
+        <div className="flex flex-col min-h-screen w-full bg-white">
+            {/* Profile Info */}
+            <main className="flex-1 px-6 pt-6 pb-24">
+                {/* Profile Image */}
+                <div className="flex flex-col items-center">
+                    <div className="relative">
+                        <Image
+                            src="/profile.jpg" // Ganti jika perlu
+                            alt="Profile"
+                            width={100}
+                            height={100}
+                            className="rounded-full object-cover border-4 border-white shadow-md"
+                        />
+                        <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full p-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-1.5A2.5 2.5 0 1113.5 6.5L4 16v4h4l9.5-9.5z" />
+                            </svg>
+                        </div>
+                    </div>
+
+                    {/* Points */}
+                    <div className="mt-4 flex items-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.172L12 18.896l-7.336 3.858 1.402-8.172L.132 9.21l8.2-1.192z" />
+                        </svg>
+                        <span className="text-lg font-semibold text-gray-800">2,150 Points</span>
+                    </div>
+                </div>
+
+                {/* Name and Email Inputs */}
+                <div className="mt-8 space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input
+                            type="email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+                </div>
+
+                {/* Buttons */}
+                <div className="mt-8 flex flex-col space-y-4">
+                    <button
+                        onClick={handleSave}
+                        className="bg-blue-500 text-white py-2 rounded-md shadow hover:bg-blue-600 transition duration-150"
+                    >
+                        Save Changes
+                    </button>
+                    <button className="bg-red-500 text-white py-2 rounded-md shadow hover:bg-red-600 transition duration-150">
+                        Log Out
+                    </button>
+                </div>
             </main>
 
             {/* Bottom Navbar */}
