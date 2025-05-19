@@ -14,22 +14,22 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  
+
   // Add Poppins font to the document
   useEffect(() => {
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
-    
+
     // Add Poppins as default font to the entire page
     document.body.style.fontFamily = "'Poppins', sans-serif";
-    
+
     return () => {
       document.head.removeChild(link);
     };
   }, []);
-  
+
   const handleToggleView = () => {
     setIsLogin(!isLogin);
     setEmail("");
@@ -37,30 +37,30 @@ export default function LoginPage() {
     setConfirmPassword("");
     setError("");
   };
-  
+
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setIsLoading(true);
-    
+
     // Basic validation
     if (!email || !password) {
       setError("Please fill in all fields");
       setIsLoading(false);
       return;
     }
-    
+
     if (!validateEmail(email)) {
       setError("Please enter a valid email address");
       setIsLoading(false);
       return;
     }
-    
+
     try {
       if (isLogin) {
         // Login logic
@@ -69,15 +69,15 @@ export default function LoginPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         });
-        
+
         const data = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(data.message || "Login failed");
         }
-        
+
         console.log("Login successful:", data);
-        
+
         // Redirect to home page after successful login
         router.push("/");
       } else {
@@ -87,27 +87,27 @@ export default function LoginPage() {
           setIsLoading(false);
           return;
         }
-        
+
         if (password.length < 8) {
           setError("Password must be at least 8 characters long");
           setIsLoading(false);
           return;
         }
-        
+
         const response = await fetch('/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         });
-        
+
         const data = await response.json();
-        
+
         if (!response.ok) {
           throw new Error(data.message || "Sign up failed");
         }
-        
+
         console.log("Sign up successful:", data);
-        
+
         // Redirect to home page after successful signup
         router.push("/");
       }
@@ -118,7 +118,7 @@ export default function LoginPage() {
       setIsLoading(false);
     }
   };
-  
+
   const handleContinueAsGuest = () => {
     router.push("/"); // Redirect to home page as guest
   };
@@ -131,7 +131,7 @@ export default function LoginPage() {
           <div className="relative w-32 h-32 mb-2">
             <Image 
               src="/Logo.png" 
-              alt="NROSTER Logo"
+              alt="NITROSTER Logo"
               layout="fill"
               objectFit="contain"
               priority
@@ -139,7 +139,7 @@ export default function LoginPage() {
           </div>
           <p className="text-lg font-medium mt-2 text-gray-800">Your Nitro Journey Starts Here!</p>
         </div>
-        
+
         {/* Form Container */}
         <div className="w-full bg-white rounded-lg p-6 shadow-sm border border-gray-100">
           <h2 className="text-2xl font-bold text-center mb-2 text-gray-800">
@@ -148,14 +148,14 @@ export default function LoginPage() {
           <p className="text-center mb-6 text-gray-600">
             {isLogin ? "Log in with your email" : "Sign up with your email"}
           </p>
-          
+
           {/* Error Message */}
           {error && (
             <div className="mb-4 p-3 bg-red-50 text-red-600 rounded-md text-sm font-medium">
               {error}
             </div>
           )}
-          
+
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Email Field */}
             <div>
@@ -168,7 +168,7 @@ export default function LoginPage() {
                 required
               />
             </div>
-            
+
             {/* Password Field */}
             <div className="relative">
               <input
@@ -196,7 +196,7 @@ export default function LoginPage() {
                 )}
               </button>
             </div>
-            
+
             {/* Confirm Password Field (only for signup) */}
             {!isLogin && (
               <div className="relative">
@@ -226,7 +226,7 @@ export default function LoginPage() {
                 </button>
               </div>
             )}
-            
+
             {/* Submit Button */}
             <div className="flex flex-col items-center gap-3">
               <button
@@ -239,7 +239,7 @@ export default function LoginPage() {
                 ) : null}
                 {isLogin ? "Log In" : "Sign Up"}
               </button>
-              
+
               {/* Continue as Guest Button */}
               <button
                 type="button"
@@ -251,7 +251,7 @@ export default function LoginPage() {
               </button>
             </div>
           </form>
-          
+
           {/* Toggle between Login and Signup */}
           <div className="text-center mt-6 text-gray-700">
             {isLogin ? (
@@ -276,7 +276,7 @@ export default function LoginPage() {
               </p>
             )}
           </div>
-          
+
           {/* Terms and Privacy */}
           <div className="text-center text-xs text-gray-500 mt-8">
             <p>
