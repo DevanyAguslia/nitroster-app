@@ -7,7 +7,7 @@ import Checkout from "../components/Checkout";
 import { useEffect } from "react";
 
 export default function Payment() {
-  const { cartItems, updateQuantity, getTotalAmount } = useCart();
+  const { cartItems, updateQuantity, removeFromCart, getTotalAmount } = useCart();
 
   useEffect(() => {
     const snapScript = "https://app.sandbox.midtrans.com/snap/snap.js";
@@ -38,6 +38,13 @@ export default function Payment() {
     }
   };
 
+  const handleDeleteItem = (id) => {
+    // Konfirmasi sebelum menghapus
+    if (window.confirm('Apakah Anda yakin ingin menghapus item ini dari keranjang?')) {
+      removeFromCart(id);
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen w-full bg-gray-50">
       {/* Header/Navbar */}
@@ -56,7 +63,7 @@ export default function Payment() {
       </header>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto px-4 py-4">
+      <main className="flex-1 overflow-y-auto px-4 py-4 pb-20">
         {cartItems.length === 0 ? (
           // Empty Cart State
           <div className="bg-white rounded-lg shadow p-8 text-center">
@@ -88,36 +95,47 @@ export default function Payment() {
 
                   {/* Product Info */}
                   <div className="ml-4 flex-1">
-                    <div className="flex justify-between">
-                      <div>
+                    <div className="flex justify-between items-start">
+                      <div className="flex-1">
                         <h3 className="text-base font-medium text-gray-900">{item.name}</h3>
                         <p className="mt-1 text-sm text-blue-500">{item.description}</p>
                         <p className="text-sm font-medium text-gray-900">Rp{item.price.toLocaleString('id-ID')}</p>
                       </div>
 
-                      {/* Quantity Controls */}
-                      <div className="flex items-center">
-                        <button
-                          onClick={() => decreaseQuantity(item.id)}
-                          className="text-gray-500 w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full"
-                        >
-                          <span className="text-lg font-medium">-</span>
-                        </button>
-                        <span className="mx-3 w-4 text-center text-black">{item.quantity}</span>
-                        <button
-                          onClick={() => increaseQuantity(item.id)}
-                          className="text-gray-500 w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full"
-                        >
-                          <span className="text-lg font-medium">+</span>
-                        </button>
-                      </div>
+                      {/* Delete Button */}
+                      <button
+                        onClick={() => handleDeleteItem(item.id)}
+                        className="ml-2 p-1 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-full transition-colors"
+                        title="Hapus item"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* Quantity Controls */}
+                    <div className="flex items-center mt-2">
+                      <button
+                        onClick={() => decreaseQuantity(item.id)}
+                        className="text-gray-500 w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full hover:bg-gray-50"
+                      >
+                        <span className="text-lg font-medium">-</span>
+                      </button>
+                      <span className="mx-3 w-4 text-center text-black">{item.quantity}</span>
+                      <button
+                        onClick={() => increaseQuantity(item.id)}
+                        className="text-gray-500 w-6 h-6 flex items-center justify-center border border-gray-300 rounded-full hover:bg-gray-50"
+                      >
+                        <span className="text-lg font-medium">+</span>
+                      </button>
                     </div>
                   </div>
                 </div>
               ))}
 
               {/* Total Amount and Checkout */}
-              <div className="mt-6 pt-4 border-t border-gray-200">
+              <div className="mt-6 pt-4 border-t border-gray-200 sticky bottom-0 bg-white">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-lg font-semibold text-black">Total</h3>
                   <p className="text-lg font-bold text-black">Rp{getTotalAmount().toLocaleString('id-ID')}</p>
@@ -132,7 +150,7 @@ export default function Payment() {
       </main>
 
       {/* Bottom Navbar */}
-      <nav className="bg-white px-4 py-3 flex items-center justify-around shadow-inner">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white px-4 py-3 flex items-center justify-around shadow-lg border-t border-gray-200">
         <Link href="/home">
           <div className="flex flex-col items-center">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
