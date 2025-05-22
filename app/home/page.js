@@ -1,11 +1,13 @@
+//home/page.js
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { useCart } from '../contexts/CartContext';
 
 const allMenus = [
-    { id: 1, name: "Akahona", price: 30000, type: "coffee", img: "Menu1.png" },
+    { id: 1, name: "Akahana", price: 30000, type: "coffee", img: "Menu1.png" },
     { id: 2, name: "Jungle Lush", price: 30000, type: "coffee", img: "Menu2.png" },
     { id: 3, name: "Aceh Gayo", price: 30000, type: "coffee", img: "Menu3.png" },
     { id: 4, name: "Snowberry", price: 30000, type: "tea", img: "Menu4.png" },
@@ -19,6 +21,7 @@ const specialMenus = [
 ];
 
 export default function Home() {
+    const { addToCart } = useCart();
     const [filter, setFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -70,10 +73,17 @@ export default function Home() {
             <main className="px-4 grid grid-cols-2 gap-4">
                 {filteredMenus.map((item) => (
                     <div key={item.id} className="flex flex-col items-start">
-                        <Image src={`/${item.img}`} alt={item.name} width={150} height={150} className="rounded-lg w-full" />
-                        <h2 className="text-sm mt-2 font-semibold">{item.name}</h2>
-                        <p className="text-sm text-gray-600">Rp{item.price.toLocaleString("id-ID")}</p>
-                        <button className="bg-[#1C8CD9] text-white px-3 py-1 rounded-full mt-1 text-sm w-full">Add</button>
+                        <Link href={`/detail_product?id=${item.id}`} className="w-full">
+                            <Image src={`/${item.img}`} alt={item.name} width={150} height={150} className="rounded-lg w-full" />
+                            <h2 className="text-sm mt-2 font-semibold">{item.name}</h2>
+                            <p className="text-sm text-gray-600">Rp{item.price.toLocaleString("id-ID")}</p>
+                        </Link>
+                        <button
+                            onClick={() => addToCart(item)}
+                            className="w-full bg-cyan-600 text-white py-1 px-3 rounded-full font-medium"
+                        >
+                            Add
+                        </button>
                     </div>
                 ))}
             </main>
@@ -85,10 +95,17 @@ export default function Home() {
                     <div className="grid grid-cols-2 gap-4">
                         {filteredSpecialMenus.map((item) => (
                             <div key={item.id} className="flex flex-col items-start">
-                                <Image src={`/${item.img}`} alt={item.name} width={150} height={150} className="rounded-lg w-full" />
-                                <h2 className="text-sm mt-2 font-semibold">{item.name}</h2>
-                                <p className="text-sm text-gray-600">Rp{item.price.toLocaleString("id-ID")}</p>
-                                <button className="bg-[#1C8CD9] text-white px-3 py-1 rounded-full mt-1 text-sm w-full">Add</button>
+                                <Link href={`/detail_product?id=${item.id}`} className="w-full">
+                                    <Image src={`/${item.img}`} alt={item.name} width={150} height={150} className="rounded-lg w-full" />
+                                    <h2 className="text-sm mt-2 font-semibold">{item.name}</h2>
+                                    <p className="text-sm text-gray-600">Rp{item.price.toLocaleString("id-ID")}</p>
+                                </Link>
+                                <button
+                                    onClick={() => addToCart(item)}
+                                    className="w-full bg-cyan-600 text-white py-1 px-3 rounded-full font-medium"
+                                >
+                                    Add
+                                </button>
                             </div>
                         ))}
                     </div>

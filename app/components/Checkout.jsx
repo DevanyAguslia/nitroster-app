@@ -57,7 +57,7 @@ const Checkout = ({ cartItems }) => {
   return (
     <div className="flex items-center justify-between">
       <button
-        className="w-full rounded bg-indigo-500 p-4 text-sm font-medium text-white transition hover:bg-indigo-600"
+        className="w-full bg-cyan-600 text-white py-3 px-4 rounded-full font-medium"
         onClick={checkout}
       >
         Checkout

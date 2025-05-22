@@ -1,3 +1,4 @@
+//contoh cartItems.js sebagai data dummy
 export const cartItems = [
   {
     id: 1,

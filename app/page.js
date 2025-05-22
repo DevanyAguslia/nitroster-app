@@ -129,8 +129,8 @@ export default function LoginPage() {
         {/* Logo and Tagline */}
         <div className="mb-8 text-center flex flex-col items-center">
           <div className="relative w-32 h-32 mb-2">
-            <Image 
-              src="/Logo.png" 
+            <Image
+              src="/Logo.png"
               alt="NITROSTER Logo"
               layout="fill"
               objectFit="contain"
@@ -241,14 +241,18 @@ export default function LoginPage() {
               </button>
 
               {/* Continue as Guest Button */}
-              <button
-                type="button"
-                onClick={handleContinueAsGuest}
-                disabled={isLoading}
-                className="w-full px-4 py-3 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors"
-              >
-                Continue as Guest
-              </button>
+              <div className="w-full block">
+                <Link href="/home">
+                  <button
+                    type="button"
+                    onClick={handleContinueAsGuest}
+                    disabled={isLoading}
+                    className="w-full px-4 py-3 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors"
+                  >
+                    Continue as Guest
+                  </button>
+                </Link>
+              </div>
             </div>
           </form>
 
