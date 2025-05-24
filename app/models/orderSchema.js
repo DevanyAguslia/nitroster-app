@@ -33,6 +33,15 @@ const OrderSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false // null untuk guest orders
+  },
+  userEmail: {
+    type: String,
+    required: false // untuk tracking guest orders
+  },
   items: [OrderItemSchema],
   totalAmount: {
     type: Number,

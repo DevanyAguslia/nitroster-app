@@ -2,6 +2,7 @@ import Midtrans from "midtrans-client";
 import { NextResponse } from "next/server";
 import connectDB from "../../libs/mongodb";
 import Order from "../../models/orderSchema";
+import jwt from 'jsonwebtoken';
 
 let snap = new Midtrans.Snap({
   isProduction: false,
@@ -13,10 +14,26 @@ export async function POST(request) {
   try {
     const { items, totalAmount } = await request.json();
 
-    // Membuat ID transaksi unik (bisa disesuaikan dengan kebutuhan)
+    // Membuat ID transaksi unik
     const transactionId = "TX-" + new Date().getTime();
 
-    // Menyiapkan array item_details untuk Midtrans
+    // === 1. CEK AUTHENTICATION (JWT TOKEN) ===
+    let userId = null;
+    let userEmail = null;
+
+    const authToken = request.cookies.get('auth-token')?.value;
+    if (authToken) {
+      try {
+        const decoded = jwt.verify(authToken, process.env.JWT_SECRET || 'your-secret-key');
+        userId = decoded.userId;
+        userEmail = decoded.email;
+        console.log('User authenticated:', userEmail);
+      } catch (error) {
+        console.log('No valid auth token found, proceeding as guest');
+      }
+    }
+
+    // === 2. SIAPKAN DATA UNTUK MIDTRANS ===
     const itemDetails = items.map(item => ({
       id: item.id.toString(),
       name: item.name,
@@ -29,18 +46,24 @@ export async function POST(request) {
       transaction_details: {
         order_id: transactionId,
         gross_amount: totalAmount
+      },
+      customer_details: {
+        email: userEmail || 'guest@example.com',
+        // Tambahkan detail customer lainnya jika diperlukan
       }
     };
 
-    // Create transaction token for Midtrans payment
-    const token = await snap.createTransactionToken(parameter);
+    // === 3. BUAT MIDTRANS PAYMENT TOKEN ===
+    const paymentToken = await snap.createTransactionToken(parameter);
+    console.log('Midtrans payment token created');
 
-    // Connect to MongoDB
+    // === 4. SIMPAN ORDER KE DATABASE ===
     await connectDB();
 
-    // Save order to MongoDB
     const newOrder = new Order({
       orderId: transactionId,
+      userId: userId,
+      userEmail: userEmail,
       items: items.map(item => ({
         productId: item.id,
         name: item.name,
@@ -54,13 +77,19 @@ export async function POST(request) {
     });
 
     await newOrder.save();
-    console.log("Order saved to MongoDB");
+    console.log("Order saved to MongoDB with ID:", transactionId);
 
-    return NextResponse.json({ token, orderId: transactionId });
+    // === 5. RETURN RESPONSE ===
+    return NextResponse.json({
+      token: paymentToken,
+      orderId: transactionId,
+      userEmail: userEmail || 'guest'
+    });
+
   } catch (error) {
     console.error("Error processing transaction:", error);
     return NextResponse.json(
-      { error: "Failed to process transaction" },
+      { error: "Failed to process transaction", details: error.message },
       { status: 500 }
     );
   }

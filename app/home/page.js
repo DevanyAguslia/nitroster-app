@@ -1,9 +1,8 @@
-//home/page.js
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from '../contexts/CartContext';
 
 const allMenus = [
@@ -24,6 +23,7 @@ export default function Home() {
     const { addToCart } = useCart();
     const [filter, setFilter] = useState("all");
     const [searchQuery, setSearchQuery] = useState("");
+    const [mounted, setMounted] = useState(false);
 
     const filteredMenus =
         filter === "all"
@@ -33,6 +33,14 @@ export default function Home() {
     const filteredSpecialMenus = specialMenus.filter((m) =>
         m.name.toLowerCase().includes(searchQuery.toLowerCase())
     );
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return null;
+    }
 
     return (
         <div className="flex flex-col min-h-screen w-full bg-white pb-28">
@@ -47,7 +55,7 @@ export default function Home() {
                         type="text"
                         placeholder="Search"
                         className="w-full px-4 py-2 border rounded-full shadow-sm focus:outline-none"
-                        value={searchQuery}
+                        defaultValue=""
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>

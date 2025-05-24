@@ -1,16 +1,23 @@
-//history/page.js
 "use client";
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from '../contexts/AuthContext';
 
 export default function History() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { isGuest, isCustomer } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
+
+    if (isGuest) {
+      router.push('/login');
+      return;
+    }
+
     const fetchOrderHistory = async () => {
       try {
         const response = await fetch("/api/order-history");
@@ -28,7 +35,11 @@ export default function History() {
     };
 
     fetchOrderHistory();
-  }, []);
+  }, [isGuest, router]);
+
+  if (isGuest) {
+    return <div>Please login to view order history</div>;
+  }
 
   // Format date to be more readable
   const formatDate = (dateString) => {

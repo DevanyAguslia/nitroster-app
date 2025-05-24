@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useAuth } from './contexts/AuthContext';
 import Link from "next/link";
 import Image from "next/image";
 
@@ -14,6 +15,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { login, signup } = useAuth();
 
   // Add Poppins font to the document
   useEffect(() => {
@@ -48,7 +50,6 @@ export default function LoginPage() {
     setError("");
     setIsLoading(true);
 
-    // Basic validation
     if (!email || !password) {
       setError("Please fill in all fields");
       setIsLoading(false);
@@ -61,27 +62,31 @@ export default function LoginPage() {
       return;
     }
 
+    // Validasi domain email
+    if (!email.endsWith('@gmail.com') && !email.endsWith('@admin.com')) {
+      setError("Please use @gmail.com for customer or @admin.com for staff");
+      setIsLoading(false);
+      return;
+    }
+
     try {
       if (isLogin) {
-        // Login logic
-        const response = await fetch('/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Login failed");
+        const result = await login(email, password);
+        if (result.success) {
+          // === REDIRECT LOGIC YANG DIPERBAIKI ===
+          if (email.endsWith('@admin.com')) {
+            // Staff/Admin -> redirect ke /admin
+            console.log('Redirecting admin to /admin');
+            router.push("/admin");
+          } else {
+            // Customer -> redirect ke /home
+            console.log('Redirecting customer to /home');
+            router.push("/home");
+          }
+        } else {
+          setError(result.message);
         }
-
-        console.log("Login successful:", data);
-
-        // Redirect to home page after successful login
-        router.push("/");
       } else {
-        // Sign up logic
         if (password !== confirmPassword) {
           setError("Passwords do not match");
           setIsLoading(false);
@@ -94,33 +99,30 @@ export default function LoginPage() {
           return;
         }
 
-        const response = await fetch('/api/auth/signup', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "Sign up failed");
+        const result = await signup(email, password);
+        if (result.success) {
+          setError("");
+          alert("Sign up successful! Please login.");
+          // Reset form dan kembali ke login
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+          setIsLogin(true); // Kembali ke form login
+        } else {
+          setError(result.message);
         }
-
-        console.log("Sign up successful:", data);
-
-        // Redirect to home page after successful signup
-        router.push("/");
       }
     } catch (error) {
-      setError(error.message || (isLogin ? "Login failed. Please check your credentials." : "Sign up failed. Please try again."));
-      console.error(isLogin ? "Login error:" : "Sign up error:", error);
+      setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleContinueAsGuest = () => {
-    router.push("/"); // Redirect to home page as guest
+    // Guest juga diarahkan ke /home
+    console.log('Redirecting guest to /home');
+    router.push("/home");
   };
 
   return (
@@ -215,7 +217,7 @@ export default function LoginPage() {
                 >
                   {showPassword ? (
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-5 w-5">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
                     </svg>
                   ) : (
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-5 w-5">
@@ -241,18 +243,14 @@ export default function LoginPage() {
               </button>
 
               {/* Continue as Guest Button */}
-              <div className="w-full block">
-                <Link href="/home">
-                  <button
-                    type="button"
-                    onClick={handleContinueAsGuest}
-                    disabled={isLoading}
-                    className="w-full px-4 py-3 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors"
-                  >
-                    Continue as Guest
-                  </button>
-                </Link>
-              </div>
+              <button
+                type="button"
+                onClick={handleContinueAsGuest}
+                disabled={isLoading}
+                className="w-full px-4 py-3 bg-gray-200 text-gray-800 font-medium rounded-md hover:bg-gray-300 transition-colors"
+              >
+                Continue as Guest
+              </button>
             </div>
           </form>
 
