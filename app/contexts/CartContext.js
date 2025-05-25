@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 
 const CartContext = createContext();
 
@@ -14,33 +15,43 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
+  const { user, isGuest } = useAuth();
 
-  // Load cart from localStorage on component mount
+  // Generate cart key based on user
+  const getCartKey = () => {
+    if (isGuest) {
+      return 'guest-cart';
+    }
+    return `cart-${user?.email || 'unknown'}`;
+  };
+
+  // Load cart when user changes
   useEffect(() => {
-    const savedCart = localStorage.getItem('cart');
+    const cartKey = getCartKey();
+    const savedCart = localStorage.getItem(cartKey);
     if (savedCart) {
       setCartItems(JSON.parse(savedCart));
+    } else {
+      setCartItems([]);
     }
-  }, []);
+  }, [user, isGuest]);
 
-  // Save cart to localStorage whenever cartItems changes
+  // Save cart whenever cartItems changes
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-  }, [cartItems]);
+    const cartKey = getCartKey();
+    localStorage.setItem(cartKey, JSON.stringify(cartItems));
+  }, [cartItems, user, isGuest]);
 
   const addToCart = (product, quantity = 1) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
-
       if (existingItem) {
-        // If item exists, update quantity
         return prevItems.map(item =>
           item.id === product.id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       } else {
-        // If item doesn't exist, add new item
         const newItem = {
           id: product.id,
           name: product.name,
@@ -59,7 +70,6 @@ export const CartProvider = ({ children }) => {
       removeFromCart(id);
       return;
     }
-
     setCartItems(prevItems =>
       prevItems.map(item =>
         item.id === id ? { ...item, quantity: newQuantity } : item
@@ -83,7 +93,6 @@ export const CartProvider = ({ children }) => {
     return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
-  // Helper function to get product description based on type
   const getProductDescription = (product) => {
     if (product.type === 'coffee') {
       return 'Cold Brew Coffee';

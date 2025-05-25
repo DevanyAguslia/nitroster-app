@@ -19,6 +19,7 @@ export default function LoginPage() {
 
   // Add Poppins font to the document
   useEffect(() => {
+
     const link = document.createElement('link');
     link.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap';
     link.rel = 'stylesheet';
@@ -120,7 +121,8 @@ export default function LoginPage() {
   };
 
   const handleContinueAsGuest = () => {
-    // Guest juga diarahkan ke /home
+    // Set flag guest di AuthContext atau localStorage
+    localStorage.setItem('isGuest', 'true');
     console.log('Redirecting guest to /home');
     router.push("/home");
   };

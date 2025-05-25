@@ -7,10 +7,18 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [guestMode, setGuestMode] = useState(false);
 
   useEffect(() => {
-    // Check if user is logged in on app start
-    checkAuthState();
+    // Check guest mode from localStorage
+    const isGuestMode = localStorage.getItem('isGuest') === 'true';
+    setGuestMode(isGuestMode);
+
+    if (!isGuestMode) {
+      checkAuthState();
+    } else {
+      setIsLoading(false);
+    }
   }, []);
 
   const checkAuthState = async () => {
@@ -68,7 +76,7 @@ export function AuthProvider({ children }) {
       login,
       signup,
       logout,
-      isGuest: !user,
+      isGuest: !user && guestMode,
       isCustomer: user?.role === 'customer',
       isStaff: user?.role === 'staff'
     }}>

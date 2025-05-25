@@ -2,18 +2,139 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from "next/navigation";
 
 export default function Profile() {
-    const [name, setName] = useState("Melissa Peters");
-    const [email, setEmail] = useState("melpeters@gmail.com");
+    const { user, logout, isGuest } = useAuth();
+    const router = useRouter();
 
-    const handleSave = () => {
-        // Logika menyimpan data bisa dimasukkan di sini, misalnya API call
-        console.log("Saved name:", name);
-        console.log("Saved email:", email);
-        alert("Changes saved!");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [originalName, setOriginalName] = useState("");
+    const [originalEmail, setOriginalEmail] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+
+    // Set initial values when user data is available
+    useEffect(() => {
+        if (user) {
+            const userName = user.name || user.email?.split('@')[0] || "User";
+            const userEmail = user.email || "";
+
+            setName(userName);
+            setEmail(userEmail);
+            setOriginalName(userName);
+            setOriginalEmail(userEmail);
+        } else if (isGuest) {
+            // Guest mode - set default values
+            setName("Guest User");
+            setEmail("guest@example.com");
+            setOriginalName("Guest User");
+            setOriginalEmail("guest@example.com");
+        }
+    }, [user, isGuest]);
+
+    // Redirect to login if not authenticated and not guest
+    useEffect(() => {
+        if (!user && !isGuest) {
+            router.push("/");
+        }
+    }, [user, isGuest, router]);
+
+    const validateEmail = (email) => {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
     };
+
+    const handleSave = async () => {
+        setError("");
+        setSuccessMessage("");
+
+        // Basic validation
+        if (!name.trim()) {
+            setError("Name cannot be empty");
+            return;
+        }
+
+        if (!validateEmail(email)) {
+            setError("Please enter a valid email address");
+            return;
+        }
+
+        // For guest users, just show a message
+        if (isGuest) {
+            alert("Guest users cannot save profile changes. Please login to save changes.");
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const response = await fetch('/api/profile/update', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name.trim(),
+                    email: email.trim()
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                setSuccessMessage("Profile updated successfully!");
+                setOriginalName(name);
+                setOriginalEmail(email);
+
+                // Clear success message after 3 seconds
+                setTimeout(() => {
+                    setSuccessMessage("");
+                }, 3000);
+            } else {
+                setError(data.message || "Failed to update profile");
+            }
+        } catch (error) {
+            console.error("Profile update error:", error);
+            setError("An error occurred while updating profile");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            await logout();
+
+            // Clear guest mode if it was set
+            localStorage.removeItem('isGuest');
+
+            // Redirect to login page
+            router.push("/");
+        } catch (error) {
+            console.error("Logout error:", error);
+            alert("An error occurred during logout");
+        }
+    };
+
+    // Check if there are unsaved changes
+    const hasUnsavedChanges = name !== originalName || email !== originalEmail;
+
+    // Show loading state while checking authentication
+    if (!user && !isGuest) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="text-center">
+                    <div className="inline-block h-8 w-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col min-h-screen w-full bg-white">
@@ -41,9 +162,30 @@ export default function Profile() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.172L12 18.896l-7.336 3.858 1.402-8.172L.132 9.21l8.2-1.192z" />
                         </svg>
-                        <span className="text-lg font-semibold text-gray-800">2,150 Points</span>
+                        <span className="text-lg font-semibold text-gray-800">0 Points</span>
                     </div>
+
+                    {/* Guest Mode Indicator */}
+                    {isGuest && (
+                        <div className="mt-2 px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full">
+                            Guest Mode
+                        </div>
+                    )}
                 </div>
+
+                {/* Success Message */}
+                {successMessage && (
+                    <div className="mt-4 p-3 bg-green-50 text-green-600 rounded-md text-sm font-medium">
+                        {successMessage}
+                    </div>
+                )}
+
+                {/* Error Message */}
+                {error && (
+                    <div className="mt-4 p-3 bg-red-50 text-red-600 rounded-md text-sm font-medium">
+                        {error}
+                    </div>
+                )}
 
                 {/* Name and Email Inputs */}
                 <div className="mt-8 space-y-4">
@@ -54,7 +196,11 @@ export default function Profile() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            disabled={isGuest}
                         />
+                        {isGuest && (
+                            <p className="text-xs text-gray-500 mt-1">Login to edit your profile</p>
+                        )}
                     </div>
 
                     <div>
@@ -64,7 +210,11 @@ export default function Profile() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                            disabled={isGuest}
                         />
+                        {isGuest && (
+                            <p className="text-xs text-gray-500 mt-1">Login to edit your profile</p>
+                        )}
                     </div>
                 </div>
 
@@ -72,12 +222,27 @@ export default function Profile() {
                 <div className="mt-8 flex flex-col space-y-4">
                     <button
                         onClick={handleSave}
-                        className="bg-blue-500 text-white py-2 rounded-md shadow hover:bg-blue-600 transition duration-150"
+                        disabled={isLoading || !hasUnsavedChanges}
+                        className={`py-2 rounded-md shadow transition duration-150 ${isLoading || !hasUnsavedChanges
+                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                            : 'bg-blue-500 text-white hover:bg-blue-600'
+                            }`}
                     >
-                        Save Changes
+                        {isLoading ? (
+                            <span className="flex items-center justify-center">
+                                <div className="inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                                Saving...
+                            </span>
+                        ) : (
+                            "Save Changes"
+                        )}
                     </button>
-                    <button className="bg-red-500 text-white py-2 rounded-md shadow hover:bg-red-600 transition duration-150">
-                        Log Out
+
+                    <button
+                        onClick={handleLogout}
+                        className="bg-red-500 text-white py-2 rounded-md shadow hover:bg-red-600 transition duration-150"
+                    >
+                        {isGuest ? "Exit Guest Mode" : "Log Out"}
                     </button>
                 </div>
             </main>
