@@ -78,7 +78,7 @@ export default function LoginPage() {
           if (email.endsWith('@admin.com')) {
             // Staff/Admin -> redirect ke /admin
             console.log('Redirecting admin to /admin');
-            router.push("/admin");
+            router.push("/admin/logScreen");
           } else {
             // Customer -> redirect ke /home
             console.log('Redirecting customer to /home');
