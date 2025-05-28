@@ -1,3 +1,4 @@
+// app/admin/dashboard/page.js
 "use client";
 
 import { useAuth } from '../../contexts/AuthContext';
@@ -30,14 +31,25 @@ export default function AdminDashboard() {
   useEffect(() => {
     if (isStaff) {
       fetchDashboardData();
+      // Set up interval untuk refresh data setiap 30 detik
+      const interval = setInterval(() => {
+        fetchDashboardData();
+      }, 30000); // 30 seconds
+
+      return () => clearInterval(interval);
     }
   }, [isStaff]);
 
   const fetchDashboardData = async () => {
     try {
-      const response = await fetch('/api/admin/orders');
-      if (response.ok) {
-        const orders = await response.json();
+      // Fetch orders data
+      const ordersResponse = await fetch('/api/admin/orders');
+      // Fetch stock data untuk out of stock items
+      const stockResponse = await fetch('/api/admin/stock');
+
+      if (ordersResponse.ok && stockResponse.ok) {
+        const orders = await ordersResponse.json();
+        const stockData = await stockResponse.json();
 
         // Calculate total orders this month
         const currentMonth = new Date().getMonth();
@@ -84,6 +96,11 @@ export default function AdminDashboard() {
           monthlyData.push(Math.floor(dayTotal / 1000)); // Convert to thousands
         }
 
+        // Get real-time out of stock items dari stock data
+        const outOfStockItems = stockData.stocks
+          ? stockData.stocks.filter(item => item.stock === 0).map(item => item.name)
+          : [];
+
         setDashboardData({
           totalOrders: monthlyOrders.length,
           totalSales: monthlyOrders.reduce((sum, order) => sum + order.totalAmount, 0),
@@ -92,7 +109,7 @@ export default function AdminDashboard() {
           todayOrders: todayOrders.length,
           todaySales: todaySales,
           monthlyData: monthlyData.length > 0 ? monthlyData : [0],
-          outOfStock: ['Full Cream Heavy Milk', 'Fresh Mint Leaves'],
+          outOfStock: outOfStockItems.length > 0 ? outOfStockItems : ['No items out of stock'],
           bestSellingProduct: popularProduct || 'No data'
         });
       }
@@ -106,7 +123,7 @@ export default function AdminDashboard() {
         todayOrders: 0,
         todaySales: 0,
         monthlyData: [0],
-        outOfStock: ['Full Cream Heavy Milk', 'Fresh Mint Leaves'],
+        outOfStock: ['Error loading stock data'],
         bestSellingProduct: 'No data'
       });
     }
@@ -245,16 +262,6 @@ export default function AdminDashboard() {
     );
   };
 
-  // Ganti section chart yang lama dengan ini:
-  <div className="py-4"> {/* Removed all horizontal padding */}
-    <div className="bg-white p-4 sm:rounded-lg sm:mx-4"> {/* Full width on mobile, rounded with margin on desktop */}
-      <h3 className="text-sm font-medium text-gray-900 mb-4">
-        Best Selling this month: {dashboardData.bestSellingProduct}
-      </h3>
-      <SimpleLineChart data={dashboardData.monthlyData} />
-    </div>
-  </div>
-
   if (isLoading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
   if (!isStaff) return <div className="flex justify-center items-center min-h-screen">Access denied</div>;
 
@@ -264,14 +271,21 @@ export default function AdminDashboard() {
       <div className="bg-white px-4 py-6">
         <div className="flex items-center justify-between">
           <h1 className="mx-5 text-lg font-bold text-gray-900">STAFF DASHBOARD</h1>
-          <button
-            onClick={handleLogout}
-            className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-            </svg>
-          </button>
+          <div className="flex items-center space-x-2">
+            {/* Real-time indicator */}
+            <div className="flex items-center">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-1"></div>
+              <span className="text-xs text-gray-500">Live</span>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -333,13 +347,36 @@ export default function AdminDashboard() {
         </div>
       </div>
 
-      {/* Attention Required */}
+      {/* Attention Required - Now with real-time stock data */}
       <div className="px-4 py-2">
-        <div className="bg-red-400 rounded-lg p-4 text-white">
-          <h3 className="text-lg font-bold mb-2">Attention Required</h3>
+        <div className={`rounded-lg p-4 text-white ${dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
+          ? 'bg-red-500'
+          : 'bg-green-500'
+          }`}>
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="text-lg font-bold">
+              {dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
+                ? 'Attention Required'
+                : 'Stock Status Good'
+              }
+            </h3>
+            <Link href="/admin/stockScreen">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:opacity-75 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </Link>
+          </div>
           <p className="text-sm">
-            Out of Stock: {dashboardData.outOfStock.join(', ')}
+            {dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
+              ? `Out of Stock: ${dashboardData.outOfStock.join(', ')}`
+              : 'All products are in stock'
+            }
           </p>
+          {dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock' && (
+            <p className="text-xs mt-1 opacity-90">
+              {dashboardData.outOfStock.length} item{dashboardData.outOfStock.length > 1 ? 's' : ''} need restocking
+            </p>
+          )}
         </div>
       </div>
 
