@@ -46,7 +46,7 @@ export default function Home() {
         <div className="flex flex-col min-h-screen w-full bg-white pb-28">
             <header className="p-4">
                 <div className="flex justify-between items-center">
-                    <Image src="/Nitroster Logo.jpg" alt="NiTRŌSFER" width={120} height={40} className="w-auto h-auto" />
+                    <Image src="/Nitroster Logo.jpg" alt="NITROSTER" width={120} height={40} className="w-auto h-auto" />
                     <Image src="/profile.png" alt="profile" width={32} height={32} className="rounded-full" />
                 </div>
 
