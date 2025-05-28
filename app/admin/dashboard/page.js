@@ -1,4 +1,3 @@
-// app/admin/dashboard/page.js
 "use client";
 
 import { useAuth } from '../../contexts/AuthContext';
@@ -274,8 +273,6 @@ export default function AdminDashboard() {
           <div className="flex items-center space-x-2">
             {/* Real-time indicator */}
             <div className="flex items-center">
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-1"></div>
-              <span className="text-xs text-gray-500">Live</span>
             </div>
             <button
               onClick={handleLogout}
