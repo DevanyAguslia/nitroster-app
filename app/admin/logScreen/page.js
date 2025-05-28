@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
 export default function LogScreen() {
-  const { user, isStaff, isLoading } = useAuth();
+  const { isStaff, isLoading } = useAuth();
   const router = useRouter();
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -92,15 +92,12 @@ export default function LogScreen() {
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
       <div className="bg-white px-4 py-4 flex items-center shadow-sm">
-        <button
-          onClick={() => router.back()}
-          className="mr-4"
-        >
+        <Link href="/admin/dashboard">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-        </button>
-        <h1 className="text-lg font-semibold text-gray-900">Transaction Log</h1>
+        </Link>
+        <h1 className="text-lg font-semibold text-gray-900 ml-4">Transaction Log</h1>
       </div>
 
       {/* Search Bar */}
