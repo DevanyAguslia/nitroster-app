@@ -47,7 +47,7 @@ export default function Home() {
             <header className="p-4">
                 <div className="flex justify-between items-center">
                     <Image src="/Nitroster Logo.jpg" alt="NITROSTER" width={120} height={40} className="w-auto h-auto" />
-                    <Image src="/profile.png" alt="profile" width={32} height={32} className="rounded-full" />
+                    <Image src="/coffeeprofile.jpg" alt="profile" width={32} height={32} className="rounded-full" />
                 </div>
 
                 <div className="mt-4">

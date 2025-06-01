@@ -267,7 +267,7 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Header */}
-      <div className="bg-white px-4 py-6">
+      <div className="px-4 py-6 bg-[#Eadeee]">
         <div className="flex items-center justify-between">
           <h1 className="mx-5 text-lg font-bold text-gray-900">STAFF DASHBOARD</h1>
           <div className="flex items-center space-x-2">
@@ -301,8 +301,8 @@ export default function AdminDashboard() {
 
       {/* Best Selling Chart */}
       <div className="px-4 py-4">
-        <div className="bg-white rounded-lg p-4">
-          <h3 className="text-sm font-medium text-gray-900 mb-4">
+        <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#222F2b' }}>
+          <h3 className="text-sm font-medium text-white mb-4">
             Best Selling this month: {dashboardData.bestSellingProduct}
           </h3>
           <SimpleLineChart data={dashboardData.monthlyData} />
@@ -312,24 +312,24 @@ export default function AdminDashboard() {
       {/* Stats Cards */}
       <div className="px-4 py-2">
         <div className="grid grid-cols-3 gap-3">
-          <div className="bg-gray-200 rounded-lg p-4 text-center">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-900 mb-1">Total Orders</h4>
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">{dashboardData.totalOrders.toLocaleString()}</p>
-            <p className="text-xs text-gray-600">This Month</p>
+          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#3aaed8' }}>
+            <h4 className="text-xs sm:text-sm font-medium text-white mb-1">Total Orders</h4>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">{dashboardData.totalOrders.toLocaleString()}</p>
+            <p className="text-xs text-white">This Month</p>
           </div>
 
-          <div className="bg-gray-200 rounded-lg p-4 text-center">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-900 mb-1">Sales</h4>
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">
+          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#3aaed8' }}>
+            <h4 className="text-xs sm:text-sm font-medium text-white mb-1">Sales</h4>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">
               {dashboardData.totalSales > 0 ? `Rp${Math.floor(dashboardData.totalSales / 1000)}K` : 'XXX'}
             </p>
-            <p className="text-xs text-gray-600">This Month</p>
+            <p className="text-xs text-white">This Month</p>
           </div>
 
-          <div className="bg-gray-200 rounded-lg p-4 text-center">
-            <h4 className="text-xs sm:text-sm font-medium text-gray-900 mb-1">Popular</h4>
-            <p className="text-sm sm:text-lg md:text-xl font-bold text-gray-900 truncate">{dashboardData.popularProduct}</p>
-            <p className="text-xs text-gray-600">{dashboardData.popularProductCount} orders</p>
+          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#3aaed8' }}>
+            <h4 className="text-xs sm:text-sm font-medium text-white mb-1">Popular</h4>
+            <p className="text-sm sm:text-lg md:text-xl font-bold text-white truncate">{dashboardData.popularProduct}</p>
+            <p className="text-xs text-white">{dashboardData.popularProductCount} orders</p>
           </div>
         </div>
       </div>

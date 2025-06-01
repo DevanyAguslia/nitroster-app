@@ -58,7 +58,7 @@ export default function Payment() {
           <h1 className="text-xl font-semibold text-black">My Cart</h1>
         </div>
         <div className="h-8 w-8 rounded-full overflow-hidden">
-          <img src="/profile-placeholder.jpg" alt="Profile" className="h-full w-full object-cover" />
+          <img src="/coffeeprofile.jpg" alt="Profile" className="h-full w-full object-cover" />
         </div>
       </header>
 

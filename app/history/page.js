@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from '../contexts/AuthContext';
+import '../globals.css';
 
 export default function History() {
   const [orders, setOrders] = useState([]);
@@ -51,7 +52,7 @@ export default function History() {
             <h1 className="text-xl font-semibold text-black">Order History</h1>
           </div>
           <div className="h-8 w-8 rounded-full overflow-hidden">
-            <img src="/profile-placeholder.jpg" alt="Profile" className="h-full w-full object-cover" />
+            <img src="/coffeeprofile.jpg" alt="Profile" className="h-full w-full object-cover" />
           </div>
         </header>
 
