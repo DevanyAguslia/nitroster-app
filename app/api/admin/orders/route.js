@@ -35,3 +35,33 @@ export async function GET(request) {
     );
   }
 }
+
+export async function PUT(request, { params }) {
+  try {
+    const token = request.cookies.get('auth-token')?.value;
+    if (!token) return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    if (decoded.role !== 'staff') return NextResponse.json({ message: "Access denied" }, { status: 403 });
+
+    const { orderId } = params;
+    const { status } = await request.json();
+
+    await connectDB();
+
+    const updatedOrder = await Order.findOneAndUpdate(
+      { orderId },
+      { status },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return NextResponse.json({ message: "Order not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(updatedOrder);
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+  }
+}
