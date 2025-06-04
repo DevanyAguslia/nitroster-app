@@ -42,6 +42,11 @@ export default function Home() {
         return null;
     }
 
+    const handleAddToCart = (item) => {
+        addToCart(item);
+        window.alert("You've already added drink to cart, please check the cart list");
+    };
+
     return (
         <div className="flex flex-col min-h-screen w-full bg-white pb-28">
             <header className="p-4">
@@ -87,7 +92,7 @@ export default function Home() {
                             <p className="text-sm text-gray-600">Rp{item.price.toLocaleString("id-ID")}</p>
                         </Link>
                         <button
-                            onClick={() => addToCart(item)}
+                            onClick={() => handleAddToCart(item)}
                             className="w-full bg-cyan-600 hover:bg-blue-600 text-white py-1 px-3 rounded-full font-medium transition-colors duration-200"
                         >
                             Add
@@ -109,7 +114,7 @@ export default function Home() {
                                     <p className="text-sm text-gray-600">Rp{item.price.toLocaleString("id-ID")}</p>
                                 </Link>
                                 <button
-                                    onClick={() => addToCart(item)}
+                                    onClick={() => handleAddToCart(item)}
                                     className="w-full bg-cyan-600 hover:bg-blue-600 text-white py-1 px-3 rounded-full font-medium transition-colors duration-200"
                                 >
                                     Add

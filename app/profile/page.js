@@ -223,24 +223,6 @@ export default function Profile() {
                 {/* Buttons */}
                 <div className="mt-8 flex flex-col space-y-4">
                     <button
-                        onClick={handleSave}
-                        disabled={isLoading || !hasUnsavedChanges}
-                        className={`py-2 rounded-md shadow transition duration-150 ${isLoading || !hasUnsavedChanges
-                            ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                            : 'bg-blue-500 text-white hover:bg-blue-600'
-                            }`}
-                    >
-                        {isLoading ? (
-                            <span className="flex items-center justify-center">
-                                <div className="inline-block h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                                Saving...
-                            </span>
-                        ) : (
-                            "Save Changes"
-                        )}
-                    </button>
-
-                    <button
                         onClick={handleLogout}
                         className="bg-red-500 text-white py-2 rounded-md shadow hover:bg-red-600 transition duration-150"
                     >
