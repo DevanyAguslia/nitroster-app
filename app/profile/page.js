@@ -17,10 +17,36 @@ export default function Profile() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [successMessage, setSuccessMessage] = useState("");
+    const [authChecked, setAuthChecked] = useState(false);
+    const [localAuthState, setLocalAuthState] = useState(null);
 
-    // Set initial values when user data is available
+    // Check localStorage immediately on mount
+    useEffect(() => {
+        const checkLocalAuth = () => {
+            const storedUser = localStorage.getItem('user');
+            const storedGuest = localStorage.getItem('isGuest');
+
+            if (storedUser) {
+                try {
+                    const userData = JSON.parse(storedUser);
+                    setLocalAuthState({ type: 'user', data: userData });
+                } catch (e) {
+                    console.error('Error parsing stored user:', e);
+                }
+            } else if (storedGuest === 'true') {
+                setLocalAuthState({ type: 'guest', data: null });
+            }
+
+            setAuthChecked(true);
+        };
+
+        checkLocalAuth();
+    }, []);
+
+    // Set profile data when auth state is available (either from context or localStorage)
     useEffect(() => {
         if (user) {
+            // Use data from AuthContext
             const userName = user.name || user.email?.split('@')[0] || "User";
             const userEmail = user.email || "";
 
@@ -29,20 +55,30 @@ export default function Profile() {
             setOriginalName(userName);
             setOriginalEmail(userEmail);
         } else if (isGuest) {
-            // Guest mode - set default values
+            // Use guest data from AuthContext
             setName("Guest User");
             setEmail("guest@example.com");
             setOriginalName("Guest User");
             setOriginalEmail("guest@example.com");
-        }
-    }, [user, isGuest]);
+        } else if (localAuthState) {
+            // Fallback to localStorage data
+            if (localAuthState.type === 'user') {
+                const userData = localAuthState.data;
+                const userName = userData.name || userData.email?.split('@')[0] || "User";
+                const userEmail = userData.email || "";
 
-    // Redirect to login if not authenticated and not guest
-    useEffect(() => {
-        if (!user && !isGuest) {
-            router.push("/");
+                setName(userName);
+                setEmail(userEmail);
+                setOriginalName(userName);
+                setOriginalEmail(userEmail);
+            } else if (localAuthState.type === 'guest') {
+                setName("Guest User");
+                setEmail("guest@example.com");
+                setOriginalName("Guest User");
+                setOriginalEmail("guest@example.com");
+            }
         }
-    }, [user, isGuest, router]);
+    }, [user, isGuest, localAuthState]);
 
     const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,7 +101,7 @@ export default function Profile() {
         }
 
         // For guest users, just show a message
-        if (isGuest) {
+        if (isGuest || localAuthState?.type === 'guest') {
             alert("Guest users cannot save profile changes. Please login to save changes.");
             return;
         }
@@ -91,6 +127,14 @@ export default function Profile() {
                 setOriginalName(name);
                 setOriginalEmail(email);
 
+                // Update localStorage as well
+                const currentUser = JSON.parse(localStorage.getItem('user') || '{}');
+                localStorage.setItem('user', JSON.stringify({
+                    ...currentUser,
+                    name: name.trim(),
+                    email: email.trim()
+                }));
+
                 // Clear success message after 3 seconds
                 setTimeout(() => {
                     setSuccessMessage("");
@@ -110,22 +154,34 @@ export default function Profile() {
         try {
             await logout();
 
-            // Clear guest mode if it was set
+            // Clear all auth data
             localStorage.removeItem('isGuest');
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
 
             // Redirect to login page
             router.push("/");
         } catch (error) {
             console.error("Logout error:", error);
-            alert("An error occurred during logout");
+            // Still clear localStorage even if logout fails
+            localStorage.removeItem('isGuest');
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+
+            router.push("/");
         }
     };
 
     // Check if there are unsaved changes
     const hasUnsavedChanges = name !== originalName || email !== originalEmail;
 
-    // Show loading state while checking authentication
-    if (!user && !isGuest) {
+    // Determine current auth state
+    const currentUser = user || (localAuthState?.type === 'user' ? localAuthState.data : null);
+    const currentIsGuest = isGuest || localAuthState?.type === 'guest';
+    const isAuthenticated = currentUser || currentIsGuest;
+
+    // Show loading while checking auth
+    if (!authChecked) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <div className="text-center">
@@ -144,7 +200,7 @@ export default function Profile() {
                 <div className="flex flex-col items-center">
                     <div className="relative">
                         <Image
-                            src={isGuest ? "/white.jpg" : "/coffeeprofile.jpg"}
+                            src={currentIsGuest ? "/white.jpg" : "/coffeeprofile.jpg"}
                             alt="Profile"
                             width={100}
                             height={100}
@@ -163,12 +219,12 @@ export default function Profile() {
                             <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.172L12 18.896l-7.336 3.858 1.402-8.172L.132 9.21l8.2-1.192z" />
                         </svg>
                         <span className="text-lg font-semibold text-gray-800">
-                            {isGuest ? '0 Points' : '1100 Points'}
+                            {currentIsGuest ? '0 Points' : '1100 Points'}
                         </span>
                     </div>
 
                     {/* Guest Mode Indicator */}
-                    {isGuest && (
+                    {currentIsGuest && (
                         <div className="mt-2 px-3 py-1 bg-yellow-100 text-yellow-800 text-sm rounded-full">
                             Guest Mode
                         </div>
@@ -198,9 +254,9 @@ export default function Profile() {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            disabled={isGuest}
+                            disabled={currentIsGuest}
                         />
-                        {isGuest && (
+                        {currentIsGuest && (
                             <p className="text-xs text-gray-500 mt-1">Login to edit your profile</p>
                         )}
                     </div>
@@ -212,13 +268,26 @@ export default function Profile() {
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            disabled={isGuest}
+                            disabled={currentIsGuest}
                         />
-                        {isGuest && (
+                        {currentIsGuest && (
                             <p className="text-xs text-gray-500 mt-1">Login to edit your profile</p>
                         )}
                     </div>
                 </div>
+
+                {/* Save Button - Only show for authenticated users with changes */}
+                {!currentIsGuest && hasUnsavedChanges && (
+                    <div className="mt-6">
+                        <button
+                            onClick={handleSave}
+                            disabled={isLoading}
+                            className="w-full bg-blue-500 text-white py-2 rounded-md shadow hover:bg-blue-600 transition duration-150 disabled:opacity-50"
+                        >
+                            {isLoading ? "Saving..." : "Save Changes"}
+                        </button>
+                    </div>
+                )}
 
                 {/* Buttons */}
                 <div className="mt-8 flex flex-col space-y-4">
@@ -226,7 +295,7 @@ export default function Profile() {
                         onClick={handleLogout}
                         className="bg-red-500 text-white py-2 rounded-md shadow hover:bg-red-600 transition duration-150"
                     >
-                        {isGuest ? "Exit Guest Mode" : "Log Out"}
+                        {currentIsGuest ? "Exit Guest Mode" : "Log Out"}
                     </button>
                 </div>
             </main>
