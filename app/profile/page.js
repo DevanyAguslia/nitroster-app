@@ -144,7 +144,7 @@ export default function Profile() {
                 <div className="flex flex-col items-center">
                     <div className="relative">
                         <Image
-                            src="/coffeeprofile.jpg"
+                            src={isGuest ? "/white.jpg" : "/coffeeprofile.jpg"}
                             alt="Profile"
                             width={100}
                             height={100}
