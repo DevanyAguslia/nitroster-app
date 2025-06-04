@@ -40,7 +40,7 @@ export default function Payment() {
 
   const handleDeleteItem = (id) => {
     // Konfirmasi sebelum menghapus
-    if (window.confirm('Apakah Anda yakin ingin menghapus item ini dari keranjang?')) {
+    if (window.confirm('Are you sure you want to remove this item from the cart?')) {
       removeFromCart(id);
     }
   };

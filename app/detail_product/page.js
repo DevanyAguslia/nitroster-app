@@ -107,6 +107,14 @@ export default function DetailProduct() {
         );
     }
 
+    const handleAddToCart = () => {
+        // Tambahkan item ke cart
+        addToCart(product, quantity);
+
+        // Tampilkan konfirmasi
+        window.confirm("You've already added drink to cart, please check the cart list");
+    };
+
     return (
         <div className="flex flex-col min-h-screen bg-white">
             {/* Hero section with integrated image and back button */}
@@ -180,7 +188,7 @@ export default function DetailProduct() {
                     </div>
 
                     <button
-                        onClick={() => addToCart(product, quantity)}
+                        onClick={handleAddToCart}
                         className="w-full bg-cyan-600 hover:bg-blue-600 text-white py-3 px-4 rounded-full font-medium transition-colors duration-200"
                     >
                         Add to Cart
