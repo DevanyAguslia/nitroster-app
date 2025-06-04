@@ -147,8 +147,12 @@ export default function History() {
         bgColor = "bg-green-100 text-green-800";
         break;
       case "pending":
-        bgColor = "bg-yellow-100 text-yellow-800";
-        break;
+        // Return link for pending status instead of badge
+        return (
+          <Link href="/thanks" className="px-3 py-2 text-sm font-medium rounded-full bg-yellow-100 text-yellow-800 hover:bg-yellow-200 transition-colors duration-200 inline-block">
+            Click to collect your order here
+          </Link>
+        );
       case "cancelled":
         bgColor = "bg-red-100 text-red-800";
         break;
@@ -179,7 +183,7 @@ export default function History() {
           <h1 className="text-xl font-semibold text-black">Order History</h1>
         </div>
         <div className="h-8 w-8 rounded-full overflow-hidden">
-          <img src="/profile-placeholder.jpg" alt="Profile" className="h-full w-full object-cover" />
+          <img src="/coffeeprofile.jpg" alt="Profile" className="h-full w-full object-cover" />
         </div>
       </header>
 
