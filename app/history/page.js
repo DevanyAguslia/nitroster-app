@@ -149,8 +149,8 @@ export default function History() {
       case "pending":
         // Return link for pending status instead of badge
         return (
-          <Link href="/thanks" className="px-3 py-2 text-sm font-medium rounded-full bg-yellow-100 text-yellow-800 hover:bg-yellow-200 transition-colors duration-200 inline-block">
-            Click to collect your order here
+          <Link href="/thanks" className="px-3 py-2 text-xs font-medium rounded-full bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors duration-200 inline-block">
+            Collect your order here
           </Link>
         );
       case "cancelled":
