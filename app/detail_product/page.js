@@ -181,7 +181,7 @@ export default function DetailProduct() {
 
                     <button
                         onClick={() => addToCart(product, quantity)}
-                        className="w-full bg-cyan-600 text-white py-3 px-4 rounded-full font-medium"
+                        className="w-full bg-cyan-600 hover:bg-blue-600 text-white py-3 px-4 rounded-full font-medium transition-colors duration-200"
                     >
                         Add to Cart
                     </button>

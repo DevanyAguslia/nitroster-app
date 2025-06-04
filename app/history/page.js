@@ -79,7 +79,7 @@ export default function History() {
             </p>
             <button
               onClick={() => router.push("/")}
-              className="bg-cyan-600 text-white px-6 py-2 rounded-full font-medium inline-block"
+              className="bg-cyan-600 hover:bg-blue-600 text-white px-6 py-2 rounded-full font-medium inline-block transition-colors duration-200"
             >
               Login Now
             </button>
@@ -208,7 +208,7 @@ export default function History() {
             <h3 className="text-lg font-medium text-gray-900">No Orders Yet</h3>
             <p className="mt-2 text-gray-600">Your order history will appear here after you make a purchase.</p>
             <Link href="/home">
-              <button className="mt-4 bg-cyan-600 text-white px-6 py-2 rounded-full font-medium inline-block mb-2">
+              <button className="mt-4 bg-cyan-600 hover:bg-blue-600 text-white px-6 py-2 rounded-full font-medium inline-block mb-2 transition-colors duration-200">
                 Start Shopping
               </button>
             </Link>

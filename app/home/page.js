@@ -88,7 +88,7 @@ export default function Home() {
                         </Link>
                         <button
                             onClick={() => addToCart(item)}
-                            className="w-full bg-cyan-600 text-white py-1 px-3 rounded-full font-medium"
+                            className="w-full bg-cyan-600 hover:bg-blue-600 text-white py-1 px-3 rounded-full font-medium transition-colors duration-200"
                         >
                             Add
                         </button>
@@ -110,7 +110,7 @@ export default function Home() {
                                 </Link>
                                 <button
                                     onClick={() => addToCart(item)}
-                                    className="w-full bg-cyan-600 text-white py-1 px-3 rounded-full font-medium"
+                                    className="w-full bg-cyan-600 hover:bg-blue-600 text-white py-1 px-3 rounded-full font-medium transition-colors duration-200"
                                 >
                                     Add
                                 </button>
