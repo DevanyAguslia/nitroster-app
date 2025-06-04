@@ -33,7 +33,7 @@ const Checkout = ({ cartItems }) => {
         onSuccess: function (result) {
           console.log("Payment success:", result);
           // Redirect to order history page after successful payment
-          router.push("/history");
+          router.push("/thanks");
         },
         onPending: function (result) {
           console.log("Payment pending:", result);
