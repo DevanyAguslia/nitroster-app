@@ -23,10 +23,19 @@ export async function POST(request) {
     await connectDB();
     const { id, name, stock, image } = await request.json();
 
+    // Cek apakah ID sudah ada
+    const existingStock = await Stock.findOne({ id });
+    if (existingStock) {
+      return NextResponse.json(
+        { message: 'Product ID already exists' },
+        { status: 400 }
+      );
+    }
+
     const newStock = new Stock({
       id,
       name,
-      stock,
+      stock: parseInt(stock) || 0,
       image
     });
 

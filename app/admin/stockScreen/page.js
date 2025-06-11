@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState, useEffect } from 'react'
 import StockUpdateModal from '@/app/components/stockUpdateModal'
+import AddItemModal from '@/app/components/addItemModal'
 
 export default function StockScreen() {
   const [inventory, setInventory] = useState([])
@@ -10,6 +11,7 @@ export default function StockScreen() {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedItem, setSelectedItem] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
   // Fetch data dari database
   useEffect(() => {
@@ -43,6 +45,10 @@ export default function StockScreen() {
         item.id === updatedStock.id ? updatedStock : item
       )
     )
+  }
+
+  const handleAddItem = (newItem) => {
+    setInventory(prevInventory => [...prevInventory, newItem])
   }
 
   // Initialize data jika belum ada
@@ -117,11 +123,15 @@ export default function StockScreen() {
           <div className="flex items-center">
             <span className="text-2xl font-bold text-gray-900">{inventory.length}</span>
             <span className="text-gray-600 ml-2">Product</span>
-            <div className="ml-4 bg-gray-900 text-white rounded-full p-1">
+            <button
+              onClick={() => setIsAddModalOpen(true)}
+              className="ml-4 bg-gray-900 hover:bg-gray-800 text-white rounded-full p-1 transition-colors"
+              title="Add New Item"
+            >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
               </svg>
-            </div>
+            </button>
           </div>
           {inventory.length === 0 && (
             <button
@@ -185,6 +195,13 @@ export default function StockScreen() {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onUpdate={handleStockUpdate}
+      />
+
+      {/* Add Item Modal */}
+      <AddItemModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onAdd={handleAddItem}
       />
 
       {/* Bottom Navbar */}
