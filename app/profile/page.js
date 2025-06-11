@@ -1,3 +1,4 @@
+// app/profile/page.js
 "use client";
 
 import Link from "next/link";
@@ -19,6 +20,7 @@ export default function Profile() {
     const [successMessage, setSuccessMessage] = useState("");
     const [authChecked, setAuthChecked] = useState(false);
     const [localAuthState, setLocalAuthState] = useState(null);
+    const [userPoints, setUserPoints] = useState(0);
 
     // Check localStorage immediately on mount
     useEffect(() => {
@@ -54,12 +56,14 @@ export default function Profile() {
             setEmail(userEmail);
             setOriginalName(userName);
             setOriginalEmail(userEmail);
+            fetchUserPoints();
         } else if (isGuest) {
             // Use guest data from AuthContext
             setName("Guest User");
             setEmail("guest@example.com");
             setOriginalName("Guest User");
             setOriginalEmail("guest@example.com");
+            setUserPoints(0);
         } else if (localAuthState) {
             // Fallback to localStorage data
             if (localAuthState.type === 'user') {
@@ -83,6 +87,24 @@ export default function Profile() {
     const validateEmail = (email) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return re.test(email);
+    };
+
+    const fetchUserPoints = async () => {
+        if (user?.email) {
+            try {
+                const response = await fetch('/api/profile/get-points', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: user.email })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setUserPoints(data.points || 0);
+                }
+            } catch (error) {
+                console.error('Failed to fetch points:', error);
+            }
+        }
     };
 
     const handleSave = async () => {
@@ -219,7 +241,7 @@ export default function Profile() {
                             <path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.782 1.402 8.172L12 18.896l-7.336 3.858 1.402-8.172L.132 9.21l8.2-1.192z" />
                         </svg>
                         <span className="text-lg font-semibold text-gray-800">
-                            {currentIsGuest ? '0 Points' : '1100 Points'}
+                            {currentIsGuest ? '0 Points' : `${userPoints} Points`}
                         </span>
                     </div>
 

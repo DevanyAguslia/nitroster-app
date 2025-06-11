@@ -1,3 +1,4 @@
+// app/models/userSchema.js
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
@@ -9,6 +10,14 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  name: {
+    type: String,
+    default: ""
+  },
+  points: {
+    type: Number,
+    default: 0
   },
   role: {
     type: String,

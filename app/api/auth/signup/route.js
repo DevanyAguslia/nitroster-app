@@ -1,3 +1,4 @@
+// app/api/auth/signup/route.js
 import { NextResponse } from "next/server";
 import connectDB from "../../../libs/mongodb";
 import User from "../../../models/userSchema";
@@ -38,7 +39,8 @@ export async function POST(request) {
     const newUser = new User({
       email,
       password: hashedPassword,
-      role
+      role,
+      points: 0
     });
 
     await newUser.save();

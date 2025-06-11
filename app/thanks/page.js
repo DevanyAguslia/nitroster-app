@@ -1,7 +1,8 @@
+// app/thanks/page.js
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';;
 
 const ThankYouPage = () => {
     const router = useRouter();
@@ -14,6 +15,41 @@ const ThankYouPage = () => {
     const handleGoBack = () => {
         router.back();
     };
+
+    const [totalQuantity, setTotalQuantity] = useState(1);
+
+    useEffect(() => {
+        const updatePoints = async () => {
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+            // Hitung total quantity dari semua item di cart
+            const totalQuantity = cart.reduce((total, item) => total + (item.quantity || 1), 0);
+
+            if (user.email && totalQuantity > 0) {
+                try {
+                    await fetch('/api/profile/update-points', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            email: user.email,
+                            itemCount: totalQuantity
+                        })
+                    });
+
+                    // Simpan quantity untuk ditampilkan
+                    setTotalQuantity(totalQuantity);
+
+                    // Clear cart setelah order selesai
+                    localStorage.removeItem('cart');
+                } catch (error) {
+                    console.error('Failed to update points:', error);
+                }
+            }
+        };
+
+        updatePoints();
+    }, []);
 
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col">
@@ -35,7 +71,7 @@ const ThankYouPage = () => {
 
                 {/* Bonus Points */}
                 <p className="text-base text-gray-600 mb-8">
-                    You've got bonus <span className="text-green-600 font-semibold">+10 points</span>
+                    You've got bonus <span className="text-green-600 font-semibold">+{totalQuantity * 10} points</span>
                 </p>
 
                 {/* QR Code */}
