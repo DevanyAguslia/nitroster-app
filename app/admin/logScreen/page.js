@@ -11,6 +11,9 @@ export default function LogScreen() {
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredOrders, setFilteredOrders] = useState([]);
+  const [selectedPeriod, setSelectedPeriod] = useState('all');
+  const [selectedMonth, setSelectedMonth] = useState(''); // Now just stores month number (1-12)
+  const [selectedYear, setSelectedYear] = useState('');
 
   useEffect(() => {
     if (!isLoading && !isStaff) {
@@ -25,17 +28,24 @@ export default function LogScreen() {
   }, [isStaff]);
 
   useEffect(() => {
+    let filtered = orders;
+
+    // Filter by period first
+    if (selectedPeriod !== 'all') {
+      filtered = filterByPeriod(orders, selectedPeriod);
+    }
+
+    // Then filter by search term
     if (searchTerm) {
-      const filtered = orders.filter(order =>
+      filtered = filtered.filter(order =>
         order.orderId.toLowerCase().includes(searchTerm.toLowerCase()) ||
         (order.userEmail && order.userEmail.toLowerCase().includes(searchTerm.toLowerCase())) ||
         order.items.some(item => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
       );
-      setFilteredOrders(filtered);
-    } else {
-      setFilteredOrders(orders);
     }
-  }, [searchTerm, orders]);
+
+    setFilteredOrders(filtered);
+  }, [searchTerm, orders, selectedPeriod, selectedMonth, selectedYear]);
 
   const fetchAllOrders = async () => {
     try {
@@ -48,6 +58,48 @@ export default function LogScreen() {
     } catch (error) {
       console.error('Error fetching orders:', error);
     }
+  };
+
+  const filterByPeriod = (orders, period) => {
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    return orders.filter(order => {
+      const orderDate = new Date(order.createdAt);
+
+      switch (period) {
+        case 'today':
+          const orderDay = new Date(orderDate.getFullYear(), orderDate.getMonth(), orderDate.getDate());
+          return orderDay.getTime() === today.getTime();
+
+        case 'week':
+          const weekAgo = new Date(today);
+          weekAgo.setDate(today.getDate() - 7);
+          return orderDate >= weekAgo && orderDate <= now;
+
+        case 'month':
+          if (selectedMonth) {
+            // Filter by selected month in current year
+            const currentYear = now.getFullYear();
+            return orderDate.getFullYear() === currentYear &&
+              orderDate.getMonth() === parseInt(selectedMonth) - 1;
+          }
+          // Filter for current month from the 1st day to now
+          const firstDayOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+          return orderDate >= firstDayOfCurrentMonth && orderDate <= now;
+
+        case 'year':
+          if (selectedYear) {
+            return orderDate.getFullYear() === parseInt(selectedYear);
+          }
+          const yearAgo = new Date(today);
+          yearAgo.setFullYear(today.getFullYear() - 1);
+          return orderDate >= yearAgo && orderDate <= now;
+
+        default:
+          return true;
+      }
+    });
   };
 
   const formatDate = (dateString) => {
@@ -81,8 +133,61 @@ export default function LogScreen() {
   };
 
   const getPaymentMethod = (order) => {
-    // Default to showing payment method from order data or fallback
     return order.paymentMethod || 'QRIS';
+  };
+
+  const getPeriodText = (period) => {
+    switch (period) {
+      case 'today':
+        return 'Hari Ini';
+      case 'week':
+        return 'Minggu Ini';
+      case 'month':
+        if (selectedMonth) {
+          const monthNames = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+          ];
+          const currentYear = new Date().getFullYear();
+          return `${monthNames[parseInt(selectedMonth) - 1]} ${currentYear}`;
+        }
+        return 'Bulan Ini';
+      case 'year':
+        return selectedYear ? `Tahun ${selectedYear}` : 'Tahun Ini';
+      default:
+        return 'Semua';
+    }
+  };
+
+  // Simplified month options - just 12 months
+  const getMonthOptions = () => {
+    const monthNames = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+
+    return monthNames.map((name, index) => ({
+      value: (index + 1).toString(),
+      label: name
+    }));
+  };
+
+  const getYearOptions = () => {
+    const options = [];
+    for (let year = 2023; year <= 2050; year++) {
+      options.push({ value: year.toString(), label: year.toString() });
+    }
+    return options;
+  };
+
+  const handlePeriodChange = (period) => {
+    setSelectedPeriod(period);
+    if (period !== 'month') {
+      setSelectedMonth('');
+    }
+    if (period !== 'year') {
+      setSelectedYear('');
+    }
   };
 
   if (isLoading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
@@ -121,11 +226,83 @@ export default function LogScreen() {
         </div>
       </div>
 
+      {/* Period Filter */}
+      <div className="px-4 py-3 bg-white border-t border-gray-100">
+        <div className="space-y-3">
+          {/* Filter Buttons */}
+          <div className="flex items-center space-x-2 overflow-x-auto">
+            <span className="text-sm text-gray-600 whitespace-nowrap">Filter:</span>
+            {['all', 'today', 'week', 'month', 'year'].map((period) => (
+              <button
+                key={period}
+                onClick={() => handlePeriodChange(period)}
+                className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-colors ${selectedPeriod === period
+                  ? 'bg-blue-500 text-white'
+                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  }`}
+              >
+                {period === 'month' ? 'Bulan' : period === 'year' ? 'Tahun' : getPeriodText(period)}
+              </button>
+            ))}
+          </div>
+
+          {/* Month Selector - Simplified */}
+          {selectedPeriod === 'month' && (
+            <div className="flex items-center space-x-2 bg-blue-50 p-2 rounded">
+              <span className="text-sm text-gray-700 font-medium">Pilih Bulan:</span>
+              <select
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white min-w-[120px]"
+              >
+                <option value=""> Pilih Bulan </option>
+                {getMonthOptions().map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Year Selector */}
+          {selectedPeriod === 'year' && (
+            <div className="flex items-center space-x-2 bg-blue-50 p-2 rounded">
+              <span className="text-sm text-gray-700 font-medium">Pilih Tahun:</span>
+              <select
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)}
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white min-w-[120px]"
+              >
+                <option value=""> Pilih Tahun </option>
+                {getYearOptions().map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Results Summary */}
+      <div className="px-4 py-2 bg-gray-50">
+        <div className="text-sm text-gray-600">
+          Menampilkan {filteredOrders.length} transaksi
+          {selectedPeriod !== 'all' && ` untuk ${getPeriodText(selectedPeriod).toLowerCase()}`}
+          {searchTerm && ` dengan kata kunci "${searchTerm}"`}
+        </div>
+      </div>
+
       {/* Transaction List */}
       <div className="px-4 space-y-3">
         {filteredOrders.length === 0 ? (
           <div className="text-center py-8 text-gray-500">
-            {searchTerm ? 'No transactions found for your search' : 'No transactions found'}
+            {searchTerm || selectedPeriod !== 'all'
+              ? 'Tidak ada transaksi ditemukan untuk filter yang dipilih'
+              : 'Tidak ada transaksi ditemukan'
+            }
           </div>
         ) : (
           filteredOrders.map((order) => (
