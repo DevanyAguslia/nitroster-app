@@ -70,8 +70,16 @@ export default function Home() {
                 }
                 
                 .gradient-bg {
-                    background:  #EADEEE;
+                    background: linear-gradient(
+                        135deg,
+                        #ffffff 0%,
+                        #d8cde6 20%,
+                        #eaddee 40%,
+                        #c5b8d6 60%,
+                        #ffffff 80%
+                    );
                     min-height: 100vh;
+                    padding-bottom: 150px;
                 }
                 
                 .header-gradient {
@@ -80,10 +88,6 @@ export default function Home() {
                     border-radius: 0 0 30px 30px;
                     box-shadow: 0 8px 30px rgba(34, 47, 43, 0.3);
                     backdrop-filter: blur(20px);
-                }
-                
-                .header-gradient * {
-                    color: white !important;
                 }
                 
                 .search-input {
@@ -113,7 +117,7 @@ export default function Home() {
                     padding: 12px 25px;
                     border-radius: 25px;
                     border: 3px solid var(--lime-green);
-                    background: rgba(255, 255, 255, 0.95);
+                    background: #3AAED8;
                     color: var(--dark-green) !important;
                     font-weight: 700;
                     font-size: 0.95rem;
@@ -139,7 +143,14 @@ export default function Home() {
                 }
                 
                 .product-card {
-                    background: rgba(255, 255, 255, 0.95);
+                    background: linear-gradient(
+                        135deg,
+                        #d0e7f9 0%,
+                        #a1c4d0 30%,
+                        #3AAED8 50%,
+                        #6bb0cc 70%,
+                        #e0f3fa 100%
+                    );
                     border-radius: 25px;
                     border: 2px solid rgba(206, 255, 26, 0.3);
                     box-shadow: 0 10px 30px rgba(34, 47, 43, 0.1);
@@ -203,7 +214,7 @@ export default function Home() {
                     font-weight: 700;
                     padding: 12px 25px;
                     transition: all 0.4s ease;
-                    box-shadow: 0 6px 20px rgba(58, 174, 216, 0.3);
+                    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
                     font-size: 0.9rem;
@@ -212,15 +223,48 @@ export default function Home() {
                 .add-btn:hover {
                     background: linear-gradient(45deg, var(--lime-green), #32CD32);
                     transform: translateY(-3px) scale(1.05);
-                    box-shadow: 0 8px 25px rgba(206, 255, 26, 0.5);
+                    box-shadow: 0 8px 25px rgba(19, 19, 19, 0.5);
                     color: var(--dark-green) !important;
                 }
                 
                 .special-card {
-                    background: linear-gradient(135deg, rgba(206, 255, 26, 0.15), rgba(255, 255, 255, 0.95));
+                    background: linear-gradient(
+                        135deg,
+                        #faffd2 0%,
+                        #e5ffc7 25%,
+                        #ccff99 50%,
+                        #e5ffc7 75%,
+                        #faffd2 100%
+                    );
                     border: 3px solid var(--lime-green);
                     position: relative;
                     overflow: hidden;
+                    z-index: 0;
+                    color: black; 
+                }
+                
+                .special-card::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: -100%;
+                    width: 200%;
+                    height: 100%;
+                    background: linear-gradient(
+                        120deg,
+                        rgba(255, 255, 255, 0.05) 0%,
+                        rgba(255, 255, 255, 0.4) 50%,
+                        rgba(255, 255, 255, 0.05) 100%
+                    );
+                    transform: skewX(-20deg);
+                    animation: shine-lime 4s infinite;
+                    pointer-events: none;
+                    z-index: 1;
+                }
+                
+                @keyframes shine-lime {
+                    from { left: -100%; }
+                    to { left: 100%; }
                 }
                 
                 .special-card::after {
@@ -239,7 +283,7 @@ export default function Home() {
                 }
                 
                 .points-badge {
-                    background: linear-gradient(45deg, var(--lime-green), #32CD32);
+                    background: #32CD32;
                     color: var(--dark-green) !important;
                     font-weight: 800;
                     border-radius: 25px;
@@ -266,17 +310,26 @@ export default function Home() {
                         transform: scale(1);
                     }
                 }
-                
+
+                .add-btn {
+                color: #000 !important; 
+                background-color: var(--lime-green); 
+                border: none;
+                }
+
+
                 .bottom-nav {
                     background: linear-gradient(135deg, var(--dark-green) 0%, var(--sky-blue) 100%);
-                    border-top: 4px solid var(--lime-green);
-                    border-radius: 30px 30px 0 0;
-                    box-shadow: 0 -8px 30px rgba(34, 47, 43, 0.2);
+                    border-top: 0.25px solid var(--lime-green);
+                    border-radius: 10px 10px 0 0;
+                    box-shadow: 0 -2px 10px rgba(34, 47, 43, 0.15);
                     backdrop-filter: blur(20px);
+                    padding-top: 2px;
+                    outline: 0.2px solid var(--lime-green);
                 }
                 
                 .nav-item {
-                    color: rgba(255,255,255,0.8) !important;
+                    color: rgba(12, 12, 12, 0.8) !important;
                     transition: all 0.4s ease;
                     padding: 15px;
                     border-radius: 20px;
@@ -297,10 +350,13 @@ export default function Home() {
                 }
                 
                 .banner-img {
-                    border-radius: 25px;
-                    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-                    border: 4px solid var(--lime-green);
+                    border-radius: 10px;
+                    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+                    border: 2px solid var(--lime-green);
                     transition: all 0.4s ease;
+                    margin-top: -8px;
+                    max-height: 100%;
+                    object-fit: cover;
                 }
                 
                 .banner-img:hover {
@@ -308,27 +364,14 @@ export default function Home() {
                     box-shadow: 0 15px 40px rgba(206, 255, 26, 0.3);
                 }
                 
-                .section-title {
-                    color: var(--dark-green) !important;
-                    font-weight: 900;
-                    font-size: 1.8rem;
-                    margin-bottom: 1.5rem;
-                    padding: 15px 0;
-                    border-bottom: 4px solid var(--lime-green);
-                    display: inline-block;
-                    text-transform: uppercase;
-                    letter-spacing: 1px;
-                    background: linear-gradient(45deg, var(--dark-green), var(--sky-blue));
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    background-clip: text;
-                }
+  
                 
                 .logo-profile {
                     border: 3px solid var(--lime-green);
                     box-shadow: 0 5px 15px rgba(206, 255, 26, 0.3);
                     transition: all 0.3s ease;
                 }
+                
                 
                 .logo-profile:hover {
                     transform: scale(1.1);
@@ -337,6 +380,12 @@ export default function Home() {
                 
                 .container-main {
                     padding: 0 20px;
+                    margin-bottom: 40px;
+                }
+                
+                .extra-content {
+                    margin-top: 50px;
+                    margin-bottom: 50px;
                 }
                 
                 @media (max-width: 768px) {
@@ -345,8 +394,13 @@ export default function Home() {
                     }
                     
                     .section-title {
-                        font-size: 1.5rem;
+                      font-size: 1.8rem;
+                      font-weight: bold;
+                      color: black !important;
+                      text-shadow: 1px 1px 1px rgba(0,0,0,1);
+                      margin-bottom: 1.5rem;
                     }
+
                     
                     .filter-btn {
                         padding: 10px 20px;
@@ -360,7 +414,7 @@ export default function Home() {
                 <header className="header-gradient p-4">
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <Image 
-                            src="/Nitroster Logo.jpg" 
+                            src="/nitroster-logo.png" 
                             alt="NITROSTER" 
                             width={120} 
                             height={40} 
@@ -400,6 +454,7 @@ export default function Home() {
                                 key={type}
                                 onClick={() => setFilter(type)}
                                 className={`btn filter-btn ${filter === type ? "active" : ""}`}
+                                style={{ color: "black" }}
                             >
                                 {type.charAt(0).toUpperCase() + type.slice(1)}
                             </button>
@@ -438,10 +493,10 @@ export default function Home() {
                     </div>
                 </main>
 
-                {/* Special Menu */}
+          
                 {filter === "all" && filteredSpecialMenus.length > 0 && (
                     <section className="container-main mt-5">
-                        <h3 className="section-title">✨ Special Menu</h3>
+                        <h3 className="section-title">Special Menu</h3>
                         <div className="row g-4">
                             {filteredSpecialMenus.map((item) => (
                                 <div key={item.id} className="col-6">
@@ -476,6 +531,16 @@ export default function Home() {
                         </div>
                     </section>
                 )}
+
+                {/* Extra Content for Better Scrolling */}
+                <div className="extra-content container-main">
+                    <div className="text-center">
+                        <h4 className="section-title"> </h4>
+                        {/* <p className="text-muted mb-5">
+                           .
+                        </p> */}
+                    </div>
+                </div>
             </div>
 
             {/* Bottom Navbar */}
