@@ -178,7 +178,11 @@ export default function AdminDashboard() {
 
     return (
       <div className="flex justify-center w-full">
-        <div className="bg-gray-200 rounded-lg p-4 relative w-full sm:w-[120%] md:w-[140%] lg:w-[160%] max-w-none">
+        <div className="rounded-lg p-4 relative w-full sm:w-[120%] md:w-[140%] lg:w-[160%] max-w-none shadow-lg"
+          style={{
+            background: 'linear-gradient(135deg, #e5e7eb 0%, #d1d5db 25%, #e5e7eb 50%, #f3f4f6 75%, #e5e7eb 100%)',
+            boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1), 0 8px 25px rgba(0,0,0,0.15)'
+          }}>
           {/* Responsive height */}
           <div className="h-32 sm:h-48 md:h-56 lg:h-64 w-full overflow-hidden">
             <svg
@@ -192,20 +196,22 @@ export default function AdminDashboard() {
                 y1="10"
                 x2={todayPosition}
                 y2="90"
-                stroke="#EF4444"
+                stroke="#dc2626"
                 strokeWidth="0.5"
                 strokeDasharray="2,2"
-                opacity="0.7"
+                opacity="0.8"
                 vectorEffect="non-scaling-stroke"
+                style={{ filter: 'drop-shadow(0 0 2px rgba(220, 38, 38, 0.5))' }}
               />
 
               <polyline
                 points={points}
                 fill="none"
-                stroke="#3B82F6"
+                stroke="#2563eb"
                 strokeWidth="1"
                 className="drop-shadow-sm"
                 vectorEffect="non-scaling-stroke"
+                style={{ filter: 'drop-shadow(0 0 3px rgba(37, 99, 235, 0.6))' }}
               />
               {data.map((value, index) => {
                 const x = (index / (data.length - 1)) * chartWidth;
@@ -216,13 +222,13 @@ export default function AdminDashboard() {
                     cx={x}
                     cy={y}
                     r="0.4"
-                    fill="#3B82F6"
+                    fill="#2563eb"
                     className="drop-shadow-sm cursor-pointer transition-all duration-200"
                     vectorEffect="non-scaling-stroke"
                     onMouseEnter={() => setHoveredPoint({ index, value, x, y, date: getDateLabel(index) })}
                     onMouseLeave={() => setHoveredPoint(null)}
                     style={{
-                      filter: hoveredPoint?.index === index ? 'drop-shadow(0 0 4px #3B82F6)' : '',
+                      filter: hoveredPoint?.index === index ? 'drop-shadow(0 0 4px #2563eb)' : '',
                       r: hoveredPoint?.index === index ? '0.8' : '0.4' // Slightly larger on hover
                     }}
                   />
@@ -233,11 +239,13 @@ export default function AdminDashboard() {
             {/* Tooltip */}
             {hoveredPoint && (
               <div
-                className="absolute bg-gray-800 text-white px-3 py-2 rounded-lg text-sm pointer-events-none z-10 shadow-lg"
+                className="absolute text-white px-3 py-2 rounded-lg text-sm pointer-events-none z-10 shadow-lg"
                 style={{
                   left: `${(hoveredPoint.x / chartWidth) * 100}%`,
                   top: `${(hoveredPoint.y / chartHeight) * 100}%`,
-                  transform: 'translate(-50%, -120%)'
+                  transform: 'translate(-50%, -120%)',
+                  background: 'linear-gradient(135deg, #374151 0%, #1f2937 50%, #111827 100%)',
+                  boxShadow: '0 10px 25px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255,255,255,0.1)'
                 }}
               >
                 <div className="font-semibold">{hoveredPoint.date}</div>
@@ -248,14 +256,15 @@ export default function AdminDashboard() {
           </div>
 
           {/* Y-axis labels - positioned absolutely with dynamic values */}
-          <div className="absolute top-4 left-2 text-gray-500 text-xs">{yAxisLabels[0]}</div>
-          <div className="absolute top-1/4 left-2 text-gray-500 text-xs">{yAxisLabels[1]}</div>
-          <div className="absolute top-1/2 left-2 text-gray-500 text-xs">{yAxisLabels[2]}</div>
-          <div className="absolute top-3/4 left-2 text-gray-500 text-xs">{yAxisLabels[3]}</div>
-          <div className="absolute bottom-4 left-2 text-gray-500 text-xs">{yAxisLabels[4]}</div>
+          <div className="absolute top-4 left-2 text-gray-600 text-xs font-medium">{yAxisLabels[0]}</div>
+          <div className="absolute top-1/4 left-2 text-gray-600 text-xs font-medium">{yAxisLabels[1]}</div>
+          <div className="absolute top-1/2 left-2 text-gray-600 text-xs font-medium">{yAxisLabels[2]}</div>
+          <div className="absolute top-3/4 left-2 text-gray-600 text-xs font-medium">{yAxisLabels[3]}</div>
+          <div className="absolute bottom-4 left-2 text-gray-600 text-xs font-medium">{yAxisLabels[4]}</div>
 
           {/* Today label - responsive positioning */}
-          <div className="absolute bottom-4 right-4 text-red-500 text-xs font-medium">Today</div>
+          <div className="absolute bottom-4 right-4 text-red-600 text-xs font-bold"
+            style={{ textShadow: '0 1px 2px rgba(220, 38, 38, 0.3)' }}>Today</div>
         </div>
       </div>
     );
@@ -265,20 +274,35 @@ export default function AdminDashboard() {
   if (!isStaff) return <div className="flex justify-center items-center min-h-screen">Access denied</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen pb-20"
+      style={{
+        background: 'linear-gradient(135deg, #EADEEE 0%, #d8c4dd 25%, #EADEEE 50%, #f0e6f3 75%, #EADEEE 100%)',
+        backgroundAttachment: 'fixed'
+      }}>
       {/* Header */}
-      <div className="px-4 py-6 bg-[#Eadeee]">
+      <div className="px-4 py-6 shadow-lg"
+        style={{
+          background: 'linear-gradient(135deg, #EADEEE 0%, #d8c4dd 25%, #EADEEE 50%, #f0e6f3 75%, #EADEEE 100%)',
+          backgroundAttachment: 'fixed'
+        }}>
         <div className="flex items-center justify-between">
-          <h1 className="mx-5 text-lg font-bold text-gray-900">STAFF DASHBOARD</h1>
+          <h1 className="mx-5 text-lg font-bold text-gray-800"
+            style={{ textShadow: '0 1px 3px rgba(255,255,255,0.5)' }}>
+            STAFF DASHBOARD
+          </h1>
           <div className="flex items-center space-x-2">
             {/* Real-time indicator */}
             <div className="flex items-center">
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full hover:bg-gray-200 transition-colors"
+              className="flex items-center justify-center w-10 h-10 rounded-full hover:scale-105 transition-all duration-200 shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 50%, #d1d5db 100%)',
+                boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.8), 0 4px 8px rgba(0,0,0,0.1)'
+              }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>
             </button>
@@ -287,22 +311,31 @@ export default function AdminDashboard() {
       </div>
 
       {/* Brand Section */}
-      <div className="px-4 py-6 bg-white">
+      <div className="px-4 py-6 shadow-lg"
+        style={{
+          background: 'linear-gradient(135deg, #EADEEE 0%, #d8c4dd 25%, #EADEEE 50%, #f0e6f3 75%, #EADEEE 100%)',
+          backgroundAttachment: 'fixed'
+        }}>
         <div className="flex justify-center items-center">
           <Image
-            src="/Nitroster Logo.jpg"
+            src="/nitroster-logo.png"
             alt="NITROSTER"
             width={120}
             height={40}
-            className="w-auto h-auto"
+            className="w-auto h-auto drop-shadow-md"
           />
         </div>
       </div>
 
       {/* Best Selling Chart */}
       <div className="px-4 py-4">
-        <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#222F2b' }}>
-          <h3 className="text-sm font-medium text-white mb-4">
+        <div className="rounded-lg p-4 text-center shadow-xl"
+          style={{
+            background: 'linear-gradient(135deg, #3aaed8 0%, #2b9bc7 25%, #1e7a9e 50%, #2b9bc7 75%, #3aaed8 100%)',
+            boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(58, 174, 216, 0.4)'
+          }}>
+          <h3 className="text-sm font-medium text-white mb-4"
+            style={{ textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
             Best Selling this month: {dashboardData.bestSellingProduct}
           </h3>
           <SimpleLineChart data={dashboardData.monthlyData} />
@@ -312,33 +345,63 @@ export default function AdminDashboard() {
       {/* Stats Cards */}
       <div className="px-4 py-2">
         <div className="grid grid-cols-3 gap-3">
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#3aaed8' }}>
-            <h4 className="text-xs sm:text-sm font-medium text-white mb-1">Total Orders</h4>
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">{dashboardData.totalOrders.toLocaleString()}</p>
-            <p className="text-xs text-white">This Month</p>
+          <div className="rounded-lg p-4 text-center shadow-xl"
+            style={{
+              clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+              background: 'linear-gradient(135deg, #3aaed8 0%, #2b9bc7 25%, #1e7a9e 50%, #2b9bc7 75%, #3aaed8 100%)',
+              boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(58, 174, 216, 0.4)'
+            }}>
+            <h4 className="text-xs sm:text-sm font-medium text-white mb-1"
+              style={{ textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>Total Orders</h4>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-white"
+              style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
+              {dashboardData.totalOrders.toLocaleString()}
+            </p>
+            <p className="text-xs text-white opacity-90">This Month</p>
           </div>
 
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#3aaed8' }}>
-            <h4 className="text-xs sm:text-sm font-medium text-white mb-1">Sales</h4>
-            <p className="text-lg sm:text-xl md:text-2xl font-bold text-white">
+          <div className="rounded-lg p-4 text-center shadow-xl"
+            style={{
+              clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+              background: 'linear-gradient(135deg, #3aaed8 0%, #2b9bc7 25%, #1e7a9e 50%, #2b9bc7 75%, #3aaed8 100%)',
+              boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(58, 174, 216, 0.4)'
+            }}>
+            <h4 className="text-xs sm:text-sm font-medium text-white mb-1"
+              style={{ textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>Sales</h4>
+            <p className="text-lg sm:text-xl md:text-2xl font-bold text-white"
+              style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
               {dashboardData.totalSales > 0 ? `Rp${Math.floor(dashboardData.totalSales / 1000)}K` : 'XXX'}
             </p>
-            <p className="text-xs text-white">This Month</p>
+            <p className="text-xs text-white opacity-90">This Month</p>
           </div>
 
-          <div className="rounded-lg p-4 text-center" style={{ backgroundColor: '#3aaed8' }}>
-            <h4 className="text-xs sm:text-sm font-medium text-white mb-1">Popular</h4>
-            <p className="text-sm sm:text-lg md:text-xl font-bold text-white truncate">{dashboardData.popularProduct}</p>
-            <p className="text-xs text-white">{dashboardData.popularProductCount} orders</p>
+          <div className="rounded-lg p-4 text-center shadow-xl"
+            style={{
+              clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)',
+              background: 'linear-gradient(135deg, #3aaed8 0%, #2b9bc7 25%, #1e7a9e 50%, #2b9bc7 75%, #3aaed8 100%)',
+              boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(58, 174, 216, 0.4)'
+            }}>
+            <h4 className="text-xs sm:text-sm font-medium text-white mb-1"
+              style={{ textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>Popular</h4>
+            <p className="text-sm sm:text-lg md:text-xl font-bold text-white truncate"
+              style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
+              {dashboardData.popularProduct}
+            </p>
+            <p className="text-xs text-white opacity-90">{dashboardData.popularProductCount} orders</p>
           </div>
         </div>
       </div>
 
       {/* Today's Overview */}
       <div className="px-4 py-2">
-        <div className="bg-purple-400 rounded-lg p-4 text-white">
-          <h3 className="text-lg font-bold mb-2">Today's Overview</h3>
-          <p className="text-sm">
+        <div className="rounded-lg p-4 text-white shadow-xl"
+          style={{
+            background: 'linear-gradient(135deg, #a855f7 0%, #9333ea 25%, #7c3aed 50%, #9333ea 75%, #a855f7 100%)',
+            boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(168, 85, 247, 0.4)'
+          }}>
+          <h3 className="text-lg font-bold mb-2"
+            style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>Today's Overview</h3>
+          <p className="text-sm" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
             Orders: {dashboardData.todayOrders} | Sales: {dashboardData.todaySales > 0 ? `Rp${Math.floor(dashboardData.todaySales / 1000)}K` : 'xxx'}
           </p>
         </div>
@@ -346,24 +409,35 @@ export default function AdminDashboard() {
 
       {/* Attention Required - Now with real-time stock data */}
       <div className="px-4 py-2">
-        <div className={`rounded-lg p-4 text-white ${dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
-          ? 'bg-red-500'
-          : 'bg-green-500'
-          }`}>
+        <div className={`rounded-lg p-4 text-white shadow-xl ${dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
+          ? ''
+          : ''
+          }`}
+          style={{
+            background: dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
+              ? 'linear-gradient(135deg, #ef4444 0%, #dc2626 25%, #b91c1c 50%, #dc2626 75%, #ef4444 100%)'
+              : 'linear-gradient(135deg, #22c55e 0%, #16a34a 25%, #15803d 50%, #16a34a 75%, #22c55e 100%)',
+            boxShadow: dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
+              ? 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(239, 68, 68, 0.4)'
+              : 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(34, 197, 94, 0.4)'
+          }}>
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-lg font-bold">
+            <h3 className="text-lg font-bold"
+              style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
               {dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
                 ? 'Attention Required'
                 : 'Stock Status Good'
               }
             </h3>
             <Link href="/admin/stockScreen">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:opacity-75 cursor-pointer" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 hover:opacity-75 cursor-pointer transition-all duration-200"
+                fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                style={{ filter: 'drop-shadow(0 1px 2px rgba(0,0,0,0.3))' }}>
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
             </Link>
           </div>
-          <p className="text-sm">
+          <p className="text-sm" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.3)' }}>
             {dashboardData.outOfStock.length > 0 && dashboardData.outOfStock[0] !== 'No items out of stock'
               ? `Out of Stock: ${dashboardData.outOfStock.join(', ')}`
               : 'All products are in stock'
@@ -378,16 +452,22 @@ export default function AdminDashboard() {
       </div>
 
       {/* Bottom Navbar */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white px-4 py-3 flex items-center justify-around shadow-lg border-t border-gray-200">
+      <nav className="fixed bottom-0 left-0 right-0 px-4 py-3 flex items-center justify-around shadow-2xl border-t"
+        style={{
+          background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 25%, #ffffff 50%, #f1f5f9 75%, #ffffff 100%)',
+          borderColor: 'rgba(229, 231, 235, 0.5)',
+          boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.8), 0 -10px 30px rgba(0,0,0,0.15)'
+        }}>
         <div className="flex flex-col items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            style={{ filter: 'drop-shadow(0 2px 4px rgba(59, 130, 246, 0.3))' }}>
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
           </svg>
-          <span className="text-xs mt-1 text-blue-500">Home</span>
+          <span className="text-xs mt-1 text-blue-500 font-medium">Home</span>
         </div>
 
         <Link href="/admin/orderScreen">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center hover:scale-105 transition-transform duration-200">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
@@ -396,7 +476,7 @@ export default function AdminDashboard() {
         </Link>
 
         <Link href="/admin/logScreen">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center hover:scale-105 transition-transform duration-200">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -405,7 +485,7 @@ export default function AdminDashboard() {
         </Link>
 
         <Link href="/admin/stockScreen">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center hover:scale-105 transition-transform duration-200">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
             </svg>
