@@ -50,11 +50,11 @@ export default function Home() {
     return (
         <>
             {/* Bootstrap CSS */}
-            <link 
-                href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" 
-                rel="stylesheet" 
+            <link
+                href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+                rel="stylesheet"
             />
-            
+
             {/* Custom CSS */}
             <style jsx>{`
                 :root {
@@ -413,19 +413,19 @@ export default function Home() {
                 {/* Header */}
                 <header className="header-gradient p-4">
                     <div className="d-flex justify-content-between align-items-center mb-4">
-                        <Image 
-                            src="/nitroster-logo.png" 
-                            alt="NITROSTER" 
-                            width={120} 
-                            height={40} 
-                            className="img-fluid logo-profile rounded-3" 
+                        <Image
+                            src="/nitroster-logo.png"
+                            alt="NITROSTER"
+                            width={120}
+                            height={40}
+                            className="img-fluid logo-profile rounded-3"
                         />
-                        <Image 
-                            src="/coffeeprofile.jpg" 
-                            alt="profile" 
-                            width={45} 
-                            height={45} 
-                            className="rounded-circle logo-profile" 
+                        <Image
+                            src="/coffeeprofile.jpg"
+                            alt="profile"
+                            width={45}
+                            height={45}
+                            className="rounded-circle logo-profile"
                         />
                     </div>
 
@@ -439,12 +439,12 @@ export default function Home() {
                     </div>
 
                     <div className="mb-4">
-                        <Image 
-                            src="/Nitroster cover.jpg" 
-                            alt="Banner" 
-                            width={500} 
-                            height={150} 
-                            className="img-fluid banner-img w-100" 
+                        <Image
+                            src="/Nitroster cover.jpg"
+                            alt="Banner"
+                            width={500}
+                            height={150}
+                            className="img-fluid banner-img w-100"
                         />
                     </div>
 
@@ -469,12 +469,12 @@ export default function Home() {
                             <div key={item.id} className="col-6">
                                 <div className="card product-card h-100 p-3">
                                     <Link href={`/detail_product?id=${item.id}`} className="text-decoration-none">
-                                        <Image 
-                                            src={`/${item.img}`} 
-                                            alt={item.name} 
-                                            width={150} 
-                                            height={150} 
-                                            className="card-img-top product-img w-100" 
+                                        <Image
+                                            src={`/${item.img}`}
+                                            alt={item.name}
+                                            width={150}
+                                            height={150}
+                                            className="card-img-top product-img w-100"
                                         />
                                         <div className="card-body p-0 mt-3">
                                             <h6 className="card-title">{item.name}</h6>
@@ -493,7 +493,7 @@ export default function Home() {
                     </div>
                 </main>
 
-          
+
                 {filter === "all" && filteredSpecialMenus.length > 0 && (
                     <section className="container-main mt-5">
                         <h3 className="section-title">Special Menu</h3>
@@ -503,12 +503,12 @@ export default function Home() {
                                     <div className="card product-card special-card h-100 p-3">
                                         <Link href={`/detail_product?id=${item.id}`} className="text-decoration-none">
                                             <div className="position-relative">
-                                                <Image 
-                                                    src={`/${item.img}`} 
-                                                    alt={item.name} 
-                                                    width={150} 
-                                                    height={150} 
-                                                    className="card-img-top product-img w-100" 
+                                                <Image
+                                                    src={`/${item.img}`}
+                                                    alt={item.name}
+                                                    width={150}
+                                                    height={150}
+                                                    className="card-img-top product-img w-100"
                                                 />
                                                 <div className="position-absolute top-0 end-0 m-2">
                                                     <span className="badge points-badge">+10 points</span>
