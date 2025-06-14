@@ -65,10 +65,6 @@ export default function Home() {
                     --lavender: #EADEEE;
                 }
                 
-
-                
-
-                
                 .gradient-bg {
                     background: linear-gradient(
                         135deg,
@@ -98,7 +94,7 @@ export default function Home() {
                     transition: all 0.4s ease;
                     padding: 15px 20px;
                     font-size: 1rem;
-                    color: var(--dark-green) !important;
+                    color: #000000 !important;
                     box-shadow: 0 5px 20px rgba(206, 255, 26, 0.2);
                 }
                 
@@ -107,10 +103,15 @@ export default function Home() {
                 }
                 
                 .search-input:focus {
+                    color: #000000 !important;
+                }
+                
+                .search-input:focus {
                     border-color: var(--lime-green);
                     box-shadow: 0 0 25px rgba(206, 255, 26, 0.5);
                     outline: none;
                     transform: translateY(-2px);
+                    color: #000000 !important;
                 }
                 
                 .filter-btn {
@@ -364,6 +365,51 @@ export default function Home() {
                     text-shadow: 1px 1px 1px rgba(0,0,0,1);
                     margin-bottom: 1.5rem;
                 }
+                
+                /* Empty State Styles */
+                .empty-state {
+                    text-align: center;
+                    padding: 60px 20px;
+                    background: rgba(255, 255, 255, 0.8);
+                    border-radius: 25px;
+                    border: 2px dashed var(--lime-green);
+                    margin: 20px 0;
+                }
+                
+                .empty-state-icon {
+                    font-size: 4rem;
+                    color: var(--sky-blue);
+                    margin-bottom: 20px;
+                    opacity: 0.7;
+                }
+                
+                .empty-state-title {
+                    font-size: 1.5rem;
+                    font-weight: bold;
+                    color: var(--dark-green);
+                    margin-bottom: 10px;
+                }
+                
+                .empty-state-message {
+                    color: #666;
+                    font-size: 1rem;
+                    margin-bottom: 20px;
+                }
+                
+                .clear-search-btn {
+                    background: var(--lime-green);
+                    border: none;
+                    border-radius: 25px;
+                    padding: 10px 20px;
+                    color: #000000 !important;
+                    font-weight: 600;
+                    transition: all 0.3s ease;
+                }
+                
+                .clear-search-btn:hover {
+                    background: #32CD32;
+                    transform: translateY(-2px);
+                }
                     
                 @media (max-width: 768px) {
                     .product-card {
@@ -381,6 +427,18 @@ export default function Home() {
                     .filter-btn {
                         padding: 10px 20px;
                         font-size: 0.9rem;
+                    }
+                    
+                    .empty-state {
+                        padding: 40px 15px;
+                    }
+                    
+                    .empty-state-icon {
+                        font-size: 3rem;
+                    }
+                    
+                    .empty-state-title {
+                        font-size: 1.3rem;
                     }
                 }
             `}</style>
@@ -410,6 +468,7 @@ export default function Home() {
                             type="text"
                             placeholder="Search your favorite drinks..."
                             className="form-control search-input"
+                            value={searchQuery}
                             onChange={(e) => setSearchQuery(e.target.value)}
                         />
                     </div>
@@ -439,35 +498,57 @@ export default function Home() {
 
                 {/* Product Grid */}
                 <main className="container-main mt-5">
-                    <div className="row g-4">
-                        {filteredMenus.map((item) => (
-                            <div key={item.id} className="col-6">
-                                <div className="card product-card h-100 p-3">
-                                    <Link href={`/detail_product?id=${item.id}`} className="text-decoration-none">
-                                        <Image
-                                            src={`/${item.img}`}
-                                            alt={item.name}
-                                            width={150}
-                                            height={150}
-                                            className="card-img-top product-img w-100"
-                                        />
-                                        <div className="card-body p-0 mt-3">
-                                            <h6 className="card-title">{item.name}</h6>
-                                            <p className="card-text">Rp{item.price.toLocaleString("id-ID")}</p>
-                                        </div>
-                                    </Link>
-                                    <button
-                                        onClick={() => handleAddToCart(item)}
-                                        className="btn add-btn w-100 mt-3"
-                                    >
-                                        Add to Cart
-                                    </button>
+                    {filteredMenus.length === 0 && filteredSpecialMenus.length === 0 ? (
+                        <div className="empty-state">
+                            <div className="empty-state-icon">🔍</div>
+                            <h3 className="empty-state-title">Tidak ada hasil ditemukan</h3>
+                            <p className="empty-state-message">
+                                Maaf, tidak ada minuman yang sesuai dengan pencarian "{searchQuery}".
+                                <br />
+                                Coba kata kunci lain atau hapus filter pencarian.
+                            </p>
+                            <button
+                                className="btn clear-search-btn"
+                                onClick={() => {
+                                    setSearchQuery("");
+                                    setFilter("all");
+                                }}
+                            >
+                                Hapus Pencarian
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="row g-4">
+                            {filteredMenus.map((item) => (
+                                <div key={item.id} className="col-6">
+                                    <div className="card product-card h-100 p-3">
+                                        <Link href={`/detail_product?id=${item.id}`} className="text-decoration-none">
+                                            <Image
+                                                src={`/${item.img}`}
+                                                alt={item.name}
+                                                width={150}
+                                                height={150}
+                                                className="card-img-top product-img w-100"
+                                            />
+                                            <div className="card-body p-0 mt-3">
+                                                <h6 className="card-title">{item.name}</h6>
+                                                <p className="card-text">Rp{item.price.toLocaleString("id-ID")}</p>
+                                            </div>
+                                        </Link>
+                                        <button
+                                            onClick={() => handleAddToCart(item)}
+                                            className="btn add-btn w-100 mt-3"
+                                        >
+                                            Add to Cart
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                 </main>
 
+                {/* Special Menu Section */}
                 {filter === "all" && filteredSpecialMenus.length > 0 && (
                     <section className="container-main mt-5">
                         <h3 className="section-title">Special Menu</h3>
