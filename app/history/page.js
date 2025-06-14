@@ -40,7 +40,7 @@ export default function History() {
   // === TAMPILAN UNTUK GUEST ===
   if (isGuest) {
     return (
-      <div className="flex flex-col min-h-screen w-full bg-gray-50">
+      <div className="min-h-screen pb-20" style={{ background: 'linear-gradient(135deg, #EADEEE 0%, #e8d5ec 25%, #dcc8e0 50%, #d4bdd8 75%, #EADEEE 100%)' }}>
         {/* Header/Navbar */}
         <header className="bg-white py-4 px-4 flex items-center justify-between shadow-sm">
           <div className="flex items-center">
@@ -149,7 +149,12 @@ export default function History() {
       case "pending":
         // Return link for pending status instead of badge
         return (
-          <Link href="/thanks" className="px-3 py-2 text-xs font-medium rounded-full bg-gray-100 text-gray-800 hover:bg-gray-200 transition-colors duration-200 inline-block">
+          <Link href="/thanks" className="px-3 py-2 text-xs font-medium rounded-full inline-block transition-all duration-300 hover:shadow-lg" style={{
+            background: 'linear-gradient(135deg, #CEFF1A 0%, #B5E600 25%, #9CCC00 50%, #B5E600 75%, #CEFF1A 100%)',
+            boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1), 0 4px 12px rgba(206, 255, 26, 0.4)',
+            color: '#2d3748',
+            textShadow: '0 1px 2px rgba(255,255,255,0.8)'
+          }}>
             Collect your order here
           </Link>
         );
@@ -171,7 +176,7 @@ export default function History() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-50">
+    <div className="min-h-screen pb-20" style={{ background: 'linear-gradient(135deg, #EADEEE 0%, #e8d5ec 25%, #dcc8e0 50%, #d4bdd8 75%, #EADEEE 100%)' }}>
       {/* Header/Navbar */}
       <header className="bg-white py-4 px-4 flex items-center justify-between shadow-sm">
         <div className="flex items-center">
@@ -220,7 +225,14 @@ export default function History() {
         ) : (
           <div className="space-y-4">
             {orders.map((order) => (
-              <div key={order.orderId} className="bg-white rounded-lg shadow overflow-hidden">
+              <div
+                key={order.orderId}
+                className="p-4 rounded-xl border border-gray-100"
+                style={{
+                  background: 'linear-gradient(135deg, #f7f7ff 0%, #e8e8f0 25%, #d4d4e0 50%, #e8e8f0 75%, #f7f7ff 100%)',
+                  boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1), 0 8px 20px rgba(212, 212, 224, 0.4)',
+                }}
+              >
                 <div className="p-4 border-b border-gray-100">
                   <div className="flex justify-between items-center">
                     <div>
