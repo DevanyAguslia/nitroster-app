@@ -192,7 +192,7 @@ export default function Payment() {
 
         {/* Bottom Navbar */}
         <nav className="navbar fixed-bottom bg-white border-top shadow-lg">
-          <div className="container-fluid px-4 py-3">
+          <div className="container-fluid px-1 py-1">
             <div className="d-flex w-100 justify-content-around">
               <Link href="/home" className="text-decoration-none">
                 <div className="d-flex flex-column align-items-center">
