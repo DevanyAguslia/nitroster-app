@@ -190,8 +190,8 @@ export default function LogScreen() {
     }
   };
 
-  if (isLoading) return <div className="flex justify-center items-center min-h-screen">Loading...</div>;
-  if (!isStaff) return <div className="flex justify-center items-center min-h-screen">Access denied</div>;
+  if (isLoading) return <div className="flex justify-center items-center min-h-screen text-black">Loading...</div>;
+  if (!isStaff) return <div className="flex justify-center items-center min-h-screen text-black">Access denied</div>;
 
   return (
     <div
@@ -209,11 +209,11 @@ export default function LogScreen() {
         }}
       >
         <Link href="/admin/dashboard">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
         </Link>
-        <h1 className="text-lg font-semibold text-gray-800 ml-4">Transaction Log</h1>
+        <h1 className="text-lg font-semibold text-black ml-4">Transaction Log</h1>
       </div>
 
       {/* Search Bar */}
@@ -230,7 +230,7 @@ export default function LogScreen() {
             placeholder="Search transactions..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-white/80 backdrop-blur-sm rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 text-gray-800 placeholder-gray-500 border border-gray-300"
+            className="w-full bg-white/80 backdrop-blur-sm rounded-lg pl-10 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 text-black placeholder-gray-500 border border-gray-300"
           />
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 absolute left-3 top-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -254,14 +254,14 @@ export default function LogScreen() {
         <div className="space-y-3">
           {/* Filter Buttons */}
           <div className="flex items-center space-x-2 overflow-x-auto">
-            <span className="text-sm text-gray-700 whitespace-nowrap">Filter:</span>
+            <span className="text-sm text-black whitespace-nowrap">Filter:</span>
             {['all', 'today', 'week', 'month', 'year'].map((period) => (
               <button
                 key={period}
                 onClick={() => handlePeriodChange(period)}
                 className={`px-3 py-1 rounded-full text-sm whitespace-nowrap transition-all duration-200 ${selectedPeriod === period
                   ? 'bg-gray-800 text-white shadow-lg transform scale-105'
-                  : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-300'
+                  : 'bg-white/80 text-black hover:bg-white border border-gray-300'
                   }`}
               >
                 {period === 'month' ? 'Bulan' : period === 'year' ? 'Tahun' : getPeriodText(period)}
@@ -272,11 +272,11 @@ export default function LogScreen() {
           {/* Month Selector - Simplified */}
           {selectedPeriod === 'month' && (
             <div className="flex items-center space-x-2 bg-white/80 p-2 rounded border border-gray-300">
-              <span className="text-sm text-gray-700 font-medium">Pilih Bulan:</span>
+              <span className="text-sm text-black font-medium">Pilih Bulan:</span>
               <select
                 value={selectedMonth}
                 onChange={(e) => setSelectedMonth(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white text-gray-800 min-w-[120px]"
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white text-black min-w-[120px]"
               >
                 <option value="">Pilih Bulan</option>
                 {getMonthOptions().map((option) => (
@@ -291,11 +291,11 @@ export default function LogScreen() {
           {/* Year Selector */}
           {selectedPeriod === 'year' && (
             <div className="flex items-center space-x-2 bg-white/80 p-2 rounded border border-gray-300">
-              <span className="text-sm text-gray-700 font-medium">Pilih Tahun:</span>
+              <span className="text-sm text-black font-medium">Pilih Tahun:</span>
               <select
                 value={selectedYear}
                 onChange={(e) => setSelectedYear(e.target.value)}
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white text-gray-800 min-w-[120px]"
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 bg-white text-black min-w-[120px]"
               >
                 <option value="">Pilih Tahun</option>
                 {getYearOptions().map((option) => (
@@ -312,7 +312,7 @@ export default function LogScreen() {
       {/* Results Summary */}
       <div className="px-4 py-2">
         <div
-          className="text-sm text-gray-800 bg-white/30 backdrop-blur-sm rounded-lg p-3 border border-white/40"
+          className="text-sm text-black bg-white/30 backdrop-blur-sm rounded-lg p-3 border border-white/40"
           style={{
             boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 4px 12px rgba(58, 174, 216, 0.2)'
           }}
@@ -327,13 +327,13 @@ export default function LogScreen() {
       <div className="px-4 space-y-3">
         {filteredOrders.length === 0 ? (
           <div
-            className="text-center py-8 text-gray-700 rounded-lg border border-white/40"
+            className="text-center py-8 text-black rounded-lg border border-white/40"
             style={{
               background: 'linear-gradient(135deg, #3aaed8 0%, #2b9bc7 25%, #1e7a9e 50%, #2b9bc7 75%, #3aaed8 100%)',
               boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(58, 174, 216, 0.4)'
             }}
           >
-            <span className="text-white">
+            <span className="text-black">
               {searchTerm || selectedPeriod !== 'all'
                 ? 'Tidak ada transaksi ditemukan untuk filter yang dipilih'
                 : 'Tidak ada transaksi ditemukan'
@@ -346,17 +346,17 @@ export default function LogScreen() {
               key={order.orderId}
               className="rounded-lg p-4 border border-white/40 backdrop-blur-sm"
               style={{
-                background: 'linear-gradient(135deg, #a855f7 0%, #9333ea 25%, #7c3aed 50%, #9333ea 75%, #a855f7 100%)',
-                boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(168, 85, 247, 0.4)'
+                background: 'linear-gradient(135deg, #f7f7ff 0%, #e8e8f0 25%, #d4d4e0 50%, #e8e8f0 75%, #f7f7ff 100%)',
+                boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1), 0 8px 20px rgba(212, 212, 224, 0.4)',
               }}
             >
               {/* Date and Transaction ID Header */}
               <div className="flex justify-between items-start mb-3">
                 <div>
-                  <div className="text-sm font-medium text-white">
+                  <div className="text-sm font-medium text-black">
                     {formatDate(order.createdAt)} {formatTime(order.createdAt)}
                   </div>
-                  <div className="text-xs text-white/80 mt-1">
+                  <div className="text-xs text-black/80 mt-1">
                     TX ID: {order.orderId}
                   </div>
                 </div>
@@ -366,20 +366,20 @@ export default function LogScreen() {
               <div className="flex justify-between items-center mb-3">
                 <div>
                   <div className="text-sm">
-                    <span className="text-white/80">Customer: </span>
-                    <span className="font-medium text-white">
+                    <span className="text-black/80">Customer: </span>
+                    <span className="font-medium text-black">
                       {order.userEmail ? order.userEmail.split('@')[0] : 'Guest'}
                     </span>
                   </div>
                   <div className="text-sm mt-1">
-                    <span className="text-white/80">Total: </span>
-                    <span className="font-medium text-white">
+                    <span className="text-black/80">Total: </span>
+                    <span className="font-medium text-black">
                       Rp{order.totalAmount.toLocaleString('id-ID')}
                     </span>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-white/80">Method: {getPaymentMethod(order)}</div>
+                  <div className="text-sm text-black/80">Method: {getPaymentMethod(order)}</div>
                 </div>
               </div>
 
@@ -391,12 +391,12 @@ export default function LogScreen() {
               </div>
 
               {/* Items */}
-              <div className="border-t border-white/30 pt-3">
-                <div className="text-sm font-medium text-white mb-2">Items:</div>
+              <div className="border-t border-black/30 pt-3">
+                <div className="text-sm font-medium text-black mb-2">Items:</div>
                 <div className="space-y-1">
                   {order.items.map((item, index) => (
                     <div key={index} className="flex justify-between text-sm">
-                      <span className="text-white/90">
+                      <span className="text-black/90">
                         - {item.name} (Rp{item.price.toLocaleString('id-ID')})
                       </span>
                     </div>
@@ -429,10 +429,10 @@ export default function LogScreen() {
         </Link>
 
         <div className="flex flex-col items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          <span className="text-xs mt-1 text-black">History</span>
+          <span className="text-xs mt-1 text-blue-500">History</span>
         </div>
 
         <Link href="/admin/stockScreen">

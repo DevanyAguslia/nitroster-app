@@ -77,17 +77,22 @@ export default function StockScreen() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-vh-100 d-flex align-items-center justify-content-center" style={{ background: 'linear-gradient(135deg, #EADEEE 0%, #e8d5ec 25%, #dcc8e0 50%, #d4bdd8 75%, #EADEEE 100%)' }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading inventory...</p>
+          <div className="spinner-border text-primary mb-3" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+          <p className="text-muted">Loading inventory...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-vh-100" style={{
+      background: 'linear-gradient(135deg, #EADEEE 0%, #e8d5ec 25%, #dcc8e0 50%, #d4bdd8 75%, #EADEEE 100%)',
+      paddingBottom: '100px'
+    }}>
       {/* Header */}
       <div className="bg-white px-4 py-4 flex items-center shadow-sm">
         <Link href="/admin/dashboard">
@@ -118,75 +123,117 @@ export default function StockScreen() {
       </div>
 
       {/* Product Counter */}
-      <div className="px-4 mb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <span className="text-2xl font-bold text-gray-900">{inventory.length}</span>
-            <span className="text-gray-600 ml-2">Product</span>
-            <button
-              onClick={() => setIsAddModalOpen(true)}
-              className="ml-4 bg-gray-900 hover:bg-gray-800 text-white rounded-full p-1 transition-colors"
-              title="Add New Item"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-              </svg>
-            </button>
-          </div>
-          {inventory.length === 0 && (
-            <button
-              onClick={initializeData}
-              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
-            >
-              Initialize Data
-            </button>
-          )}
-        </div>
+      <div className="container-fluid px-3 mb-3">
+        <div className="rounded-3 p-3" style={{ background: 'linear-gradient(135deg, #f7f7ff 0%, #e8e8f0 25%, #d4d4e0 50%, #e8e8f0 75%, #f7f7ff 100%)', boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1), 0 8px 20px rgba(212, 212, 224, 0.4)' }}>
+          <div className="d-flex align-items-center justify-content-between">
+            <div className="d-flex align-items-center">
+              <span className="fs-1 fw-bold text-dark">{inventory.length}</span>
+              <span className="text-muted ms-2">Product</span>
+              <button
+                onClick={() => setIsAddModalOpen(true)}
+                className="ms-3 d-flex align-items-center justify-content-center"
+                title="Add New Item"
+                style={{
+                  width: '32px',
+                  height: '32px',
+                  backgroundColor: '#000000',
+                  border: 'none',
+                  outline: 'none',
+                  borderRadius: '50%',
+                  cursor: 'pointer',
+                  padding: 0
+                }}
+              >
+                <span
+                  style={{
+                    color: 'white',
+                    fontSize: '25px',
+                    lineHeight: '0.10',
+                    fontWeight: 'bold',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  +
+                </span>
+              </button>
 
-        {/* Stock Status Bar */}
-        <div className="flex items-center mt-3 space-x-4">
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-            <span className="text-sm text-gray-600">In Stock : {inStockCount}</span>
+            </div>
+            {inventory.length === 0 && (
+              <button
+                onClick={initializeData}
+                className="btn btn-primary btn-sm"
+              >
+                Initialize Data
+              </button>
+            )}
           </div>
-          <div className="flex items-center">
-            <div className="w-3 h-3 bg-red-500 rounded-full mr-2"></div>
-            <span className="text-sm text-gray-600">Out of Stock : {outOfStockCount}</span>
+
+          {/* Stock Status Bar */}
+          <div className="d-flex align-items-center mt-3">
+            <div className="d-flex align-items-center me-4">
+              <div className="bg-primary rounded-circle me-2" style={{ width: '12px', height: '12px' }}></div>
+              <span className="small text-muted">In Stock : {inStockCount}</span>
+            </div>
+            <div className="d-flex align-items-center">
+              <div className="bg-danger rounded-circle me-2" style={{ width: '12px', height: '12px' }}></div>
+              <span className="small text-muted">Out of Stock : {outOfStockCount}</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Inventory List */}
-      <div className="px-4 space-y-3">
-        {filteredInventory.map((item) => (
-          <div
-            key={item.id}
-            className="bg-white rounded-lg p-4 flex items-center justify-between shadow-sm cursor-pointer hover:bg-gray-50"
-            onClick={() => handleItemClick(item)}
-          >
-            <div className="flex items-center">
-              <div className="text-3xl mr-4">{item.image}</div>
-              <div>
-                <div className="text-sm text-gray-500">Product ID: {item.id}</div>
-                <div className="font-medium text-gray-900">{item.name}</div>
-                <div className="text-sm text-gray-600">
-                  Stock: {item.stock}pcs - {item.status}
+      <div className="container-fluid px-3">
+        <div className="row g-3">
+          {filteredInventory.map((item) => (
+            <div key={item.id} className="col-12 mb-2">
+              <div
+                className="rounded-3 p-3 cursor-pointer"
+                style={{
+                  background: 'linear-gradient(135deg, #f7f7ff 0%, #e8e8f0 25%, #d4d4e0 50%, #e8e8f0 75%, #f7f7ff 100%)',
+                  boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1), 0 8px 20px rgba(212, 212, 224, 0.4)',
+                  transition: 'all 0.2s ease',
+                  cursor: 'pointer'
+                }}
+                onClick={() => handleItemClick(item)}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1), 0 12px 25px rgba(212, 212, 224, 0.5)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = 'inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1), 0 8px 20px rgba(212, 212, 224, 0.4)'
+                }}
+              >
+                <div className="d-flex align-items-center justify-content-between">
+                  <div className="d-flex align-items-center">
+                    <div className="fs-1 me-3">{item.image}</div>
+                    <div>
+                      <div className="small text-muted">Product ID: {item.id}</div>
+                      <div className="fw-medium text-dark">{item.name}</div>
+                      <div className="small text-muted">
+                        Stock: {item.stock}pcs - {item.status}
+                      </div>
+                    </div>
+                  </div>
+                  <div className="d-flex align-items-center">
+                    {item.stock > 0 ? (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    ) : (
+                      <svg xmlns="http://www.w3.org/2000/svg" className="text-danger" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="flex items-center">
-              {item.stock > 0 ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              )}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Stock Update Modal */}
@@ -240,6 +287,6 @@ export default function StockScreen() {
           <span className="text-xs mt-1 text-blue-500">Admin</span>
         </div>
       </nav>
-    </div>
+    </div >
   )
 }

@@ -11,7 +11,7 @@ function BottomNavbar() {
             <Link href="/admin/dashboard" className="flex flex-col items-center">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-gray-500"
+                    className="h-6 w-6 text-black"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -23,13 +23,13 @@ function BottomNavbar() {
                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                     />
                 </svg>
-                <span className="text-xs mt-1 text-gray-500">Home</span>
+                <span className="text-xs mt-1 text-black">Home</span>
             </Link>
 
             <Link href="/admin/orderScreen" className="flex flex-col items-center">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-gray-500"
+                    className="h-6 w-6 text-black"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -41,13 +41,13 @@ function BottomNavbar() {
                         d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                     />
                 </svg>
-                <span className="text-xs mt-1 text-gray-500">Cart</span>
+                <span className="text-xs mt-1 text-black">Cart</span>
             </Link>
 
             <Link href="/admin/logScreen" className="flex flex-col items-center">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-gray-500"
+                    className="h-6 w-6 text-black"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -59,13 +59,13 @@ function BottomNavbar() {
                         d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                 </svg>
-                <span className="text-xs mt-1 text-gray-500">History</span>
+                <span className="text-xs mt-1 text-black">History</span>
             </Link>
 
             <div className="flex flex-col items-center">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-blue-500"
+                    className="h-6 w-6 text-black"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -77,7 +77,7 @@ function BottomNavbar() {
                         d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
                     />
                 </svg>
-                <span className="text-xs mt-1 text-blue-500">Admin</span>
+                <span className="text-xs mt-1 text-black">Admin</span>
             </div>
         </nav>
     );
@@ -161,21 +161,21 @@ export default function OrderScreen() {
     const statusColor = (status) => {
         switch (status.toLowerCase()) {
             case "pending":
-                return "bg-yellow-100 text-yellow-800";
+                return "bg-yellow-100 text-black";
             case "in progress":
-                return "bg-blue-100 text-blue-800";
+                return "bg-blue-100 text-black";
             case "done":
-                return "bg-green-100 text-green-800";
+                return "bg-green-100 text-black";
             default:
-                return "bg-gray-100 text-gray-800";
+                return "bg-gray-100 text-black";
         }
     };
 
     if (isLoading)
-        return <div className="text-center mt-20">Loading...</div>;
+        return <div className="text-center mt-20 text-black">Loading...</div>;
 
     if (!isStaff)
-        return <div className="text-center mt-20">Access Denied</div>;
+        return <div className="text-center mt-20 text-black">Access Denied</div>;
 
     return (
         <>
@@ -187,7 +187,7 @@ export default function OrderScreen() {
                     <Link href="/admin/dashboard">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-6 w-6 text-gray-600 cursor-pointer"
+                            className="h-6 w-6 text-black cursor-pointer"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -200,7 +200,7 @@ export default function OrderScreen() {
                             />
                         </svg>
                     </Link>
-                    <h1 className="text-lg font-semibold text-gray-900 ml-4">
+                    <h1 className="text-lg font-semibold text-black ml-4">
                         Order Screen
                     </h1>
                 </div>
@@ -212,14 +212,14 @@ export default function OrderScreen() {
                         placeholder="Search order ID..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full bg-gray-100 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full bg-gray-100 rounded-lg px-4 py-2 text-sm text-black placeholder-black focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </div>
 
                 {/* Order List */}
                 <div className="px-4 space-y-4 mt-4">
                     {filteredOrders.length === 0 ? (
-                        <div className="text-center text-gray-500 py-10">
+                        <div className="text-center text-black py-10">
                             {searchTerm ? "No matching orders." : "No orders found."}
                         </div>
                     ) : (
@@ -228,25 +228,25 @@ export default function OrderScreen() {
                                 key={order.orderId}
                                 className="p-4 rounded-xl border border-gray-100"
                                 style={{
-                                    background: 'linear-gradient(135deg, #3aaed8 0%, #2b9bc7 25%, #1e7a9e 50%, #2b9bc7 75%, #3aaed8 100%)',
-                                    boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.3), 0 8px 20px rgba(58, 174, 216, 0.4)'
+                                    background: 'linear-gradient(135deg, #f7f7ff 0%, #e8e8f0 25%, #d4d4e0 50%, #e8e8f0 75%, #f7f7ff 100%)',
+                                    boxShadow: 'inset 0 1px 3px rgba(255,255,255,0.8), inset 0 -1px 3px rgba(0,0,0,0.1), 0 8px 20px rgba(212, 212, 224, 0.4)',
                                 }}
                             >
                                 <div className="flex justify-between items-start">
                                     <div>
-                                        <p className="text-sm font-medium text-white">
+                                        <p className="text-sm font-medium text-black">
                                             {formatDateTime(order.createdAt)}
                                         </p>
-                                        <p className="text-xs text-gray-100 mt-1">
+                                        <p className="text-xs text-black mt-1">
                                             TX ID: {order.orderId}
                                         </p>
 
                                         {/* Items */}
                                         <div className="mt-3">
-                                            <p className="text-sm font-semibold text-white mb-1">
+                                            <p className="text-sm font-semibold text-black mb-1">
                                                 Items:
                                             </p>
-                                            <ul className="space-y-1 text-sm text-gray-100">
+                                            <ul className="space-y-1 text-sm text-black">
                                                 {order.items.map((item, idx) => (
                                                     <li key={idx}>
                                                         - {item.name} (Rp{item.price.toLocaleString("id-ID")})
@@ -282,10 +282,10 @@ export default function OrderScreen() {
                 <nav className="fixed bottom-0 left-0 right-0 px-4 py-3 flex items-center justify-around shadow-lg border-t border-gray-200" style={{ backgroundColor: '#ffffff', opacity: 1 }}>
                     <Link href="/admin/dashboard">
                         <div className="flex flex-col items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                             </svg>
-                            <span className="text-xs mt-1 text-gray-500">Home</span>
+                            <span className="text-xs mt-1 text-black">Home</span>
                         </div>
                     </Link>
 
@@ -293,24 +293,24 @@ export default function OrderScreen() {
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                         </svg>
-                        <span className="text-xs mt-1 text-gray-500">Cart</span>
+                        <span className="text-xs mt-1 text-blue-500">Cart</span>
                     </div>
 
                     <Link href="/admin/logScreen">
                         <div className="flex flex-col items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            <span className="text-xs mt-1 text-gray-500">History</span>
+                            <span className="text-xs mt-1 text-black">History</span>
                         </div>
                     </Link>
 
                     <Link href="/admin/stockScreen">
                         <div className="flex flex-col items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                             </svg>
-                            <span className="text-xs mt-1 text-blue-500">Admin</span>
+                            <span className="text-xs mt-1 text-black">Admin</span>
                         </div>
                     </Link>
                 </nav>
