@@ -61,13 +61,13 @@ export default function Home() {
                     --lime-green: #CEFF1A;
                     --dark-green: #222F2B;
                     --sky-blue: #3AAED8;
-                    --light-gray: #F7F7FF;
+                   --light-gray: #F7F7FF; 
                     --lavender: #EADEEE;
                 }
                 
-                * {
-                    color: #222F2B !important;
-                }
+
+                
+
                 
                 .gradient-bg {
                     background: linear-gradient(
@@ -79,7 +79,7 @@ export default function Home() {
                         #ffffff 80%
                     );
                     min-height: 100vh;
-                    padding-bottom: 150px;
+                    padding-bottom: 100px;
                 }
                 
                 .header-gradient {
@@ -118,7 +118,7 @@ export default function Home() {
                     border-radius: 25px;
                     border: 3px solid var(--lime-green);
                     background: #3AAED8;
-                    color: var(--dark-green) !important;
+                    color: #000000 !important;
                     font-weight: 700;
                     font-size: 0.95rem;
                     transition: all 0.4s ease;
@@ -129,7 +129,7 @@ export default function Home() {
                 
                 .filter-btn.active {
                     background: linear-gradient(45deg, var(--lime-green), #32CD32);
-                    color: var(--dark-green) !important;
+                    color: #000000 !important;
                     transform: translateY(-3px) scale(1.05);
                     box-shadow: 0 8px 25px rgba(206, 255, 26, 0.4);
                     border-color: #32CD32;
@@ -137,7 +137,7 @@ export default function Home() {
                 
                 .filter-btn:hover {
                     background: linear-gradient(45deg, var(--sky-blue), var(--lime-green));
-                    color: var(--dark-green) !important;
+                    color: #000000 !important;
                     transform: translateY(-2px);
                     box-shadow: 0 6px 20px rgba(58, 174, 216, 0.3);
                 }
@@ -177,14 +177,14 @@ export default function Home() {
                 }
                 
                 .product-card .card-title {
-                    color: var(--dark-green) !important;
+                    color: #000000 !important;
                     font-weight: 800;
                     font-size: 1.1rem;
                     margin-bottom: 5px;
                 }
                 
                 .product-card .card-text {
-                    color: #555 !important;
+                    color: #000000 !important;
                     font-weight: 600;
                     font-size: 1rem;
                 }
@@ -207,24 +207,26 @@ export default function Home() {
                 }
                 
                 .add-btn {
-                    background: linear-gradient(45deg, var(--sky-blue), var(--dark-green));
+                    background: var(--lime-green);
                     border: none;
-                    border-radius: 30px;
-                    color: white !important;
+                    border-radius: 100px;
+                    color: #000000 !important;
                     font-weight: 700;
                     padding: 12px 25px;
                     transition: all 0.4s ease;
-                    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+                    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
                     text-transform: uppercase;
                     letter-spacing: 0.5px;
                     font-size: 0.9rem;
+                    display: block;
+                    margin: 0 auto;
                 }
                 
                 .add-btn:hover {
                     background: linear-gradient(45deg, var(--lime-green), #32CD32);
                     transform: translateY(-3px) scale(1.05);
                     box-shadow: 0 8px 25px rgba(19, 19, 19, 0.5);
-                    color: var(--dark-green) !important;
+                    color: #000000 !important;
                 }
                 
                 .special-card {
@@ -240,7 +242,15 @@ export default function Home() {
                     position: relative;
                     overflow: hidden;
                     z-index: 0;
-                    color: black; 
+                    color: #000000 !important; 
+                }
+                
+                .special-card .card-title {
+                    color: #000000 !important;
+                }
+                
+                .special-card .card-text {
+                    color: #000000 !important;
                 }
                 
                 .special-card::before {
@@ -284,7 +294,7 @@ export default function Home() {
                 
                 .points-badge {
                     background: #32CD32;
-                    color: var(--dark-green) !important;
+                    color: #000000 !important;
                     font-weight: 800;
                     border-radius: 25px;
                     padding: 8px 15px;
@@ -310,44 +320,6 @@ export default function Home() {
                         transform: scale(1);
                     }
                 }
-
-                .add-btn {
-                color: #000 !important; 
-                background-color: var(--lime-green); 
-                border: none;
-                }
-
-
-                .bottom-nav {
-                    background: linear-gradient(135deg, var(--dark-green) 0%, var(--sky-blue) 100%);
-                    border-top: 0.25px solid var(--lime-green);
-                    border-radius: 10px 10px 0 0;
-                    box-shadow: 0 -2px 10px rgba(34, 47, 43, 0.15);
-                    backdrop-filter: blur(20px);
-                    padding-top: 2px;
-                    outline: 0.2px solid var(--lime-green);
-                }
-                
-                .nav-item {
-                    color: rgba(12, 12, 12, 0.8) !important;
-                    transition: all 0.4s ease;
-                    padding: 15px;
-                    border-radius: 20px;
-                    text-align: center;
-                }
-                
-                .nav-item.active {
-                    color: var(--lime-green) !important;
-                    background: rgba(206, 255, 26, 0.15);
-                    transform: translateY(-5px);
-                    box-shadow: 0 5px 15px rgba(206, 255, 26, 0.3);
-                }
-                
-                .nav-item:hover {
-                    color: var(--lime-green) !important;
-                    transform: translateY(-3px);
-                    background: rgba(255, 255, 255, 0.1);
-                }
                 
                 .banner-img {
                     border-radius: 10px;
@@ -364,14 +336,11 @@ export default function Home() {
                     box-shadow: 0 15px 40px rgba(206, 255, 26, 0.3);
                 }
                 
-  
-                
                 .logo-profile {
                     border: 3px solid var(--lime-green);
                     box-shadow: 0 5px 15px rgba(206, 255, 26, 0.3);
                     transition: all 0.3s ease;
                 }
-                
                 
                 .logo-profile:hover {
                     transform: scale(1.1);
@@ -388,6 +357,14 @@ export default function Home() {
                     margin-bottom: 50px;
                 }
                 
+                .section-title {
+                    font-size: 1.8rem;
+                    font-weight: bold;
+                    color: #000000 !important;
+                    text-shadow: 1px 1px 1px rgba(0,0,0,1);
+                    margin-bottom: 1.5rem;
+                }
+                    
                 @media (max-width: 768px) {
                     .product-card {
                         margin-bottom: 20px;
@@ -396,11 +373,10 @@ export default function Home() {
                     .section-title {
                       font-size: 1.8rem;
                       font-weight: bold;
-                      color: black !important;
+                      color: #000000 !important;
                       text-shadow: 1px 1px 1px rgba(0,0,0,1);
                       margin-bottom: 1.5rem;
                     }
-
                     
                     .filter-btn {
                         padding: 10px 20px;
@@ -454,7 +430,6 @@ export default function Home() {
                                 key={type}
                                 onClick={() => setFilter(type)}
                                 className={`btn filter-btn ${filter === type ? "active" : ""}`}
-                                style={{ color: "black" }}
                             >
                                 {type.charAt(0).toUpperCase() + type.slice(1)}
                             </button>
@@ -492,7 +467,6 @@ export default function Home() {
                         ))}
                     </div>
                 </main>
-
 
                 {filter === "all" && filteredSpecialMenus.length > 0 && (
                     <section className="container-main mt-5">
@@ -536,49 +510,52 @@ export default function Home() {
                 <div className="extra-content container-main">
                     <div className="text-center">
                         <h4 className="section-title"> </h4>
-                        {/* <p className="text-muted mb-5">
-                           .
-                        </p> */}
                     </div>
                 </div>
             </div>
 
-            {/* Bottom Navbar */}
-            <nav className="fixed-bottom bottom-nav p-3">
-                <div className="d-flex justify-content-around align-items-center">
-                    <div className="nav-item active">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="mb-1" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
-                        <div className="small fw-bold">Home</div>
+            {/* Bottom Navbar - FIXED */}
+            <nav className="navbar fixed-bottom bg-white border-top shadow-lg">
+                <div className="container-fluid px-4 py-3">
+                    <div className="d-flex w-100 justify-content-around">
+                        {/* Home Icon - Biru */}
+                        <div className="d-flex flex-column align-items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="text-info mb-1" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                            </svg>
+                            <span className="small text-info">Home</span>
+                        </div>
+
+                        {/* Cart Icon - Gray */}
+                        <Link href="/payment" className="text-decoration-none">
+                            <div className="d-flex flex-column align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="text-muted mb-1" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                </svg>
+                                <span className="small text-muted">Cart</span>
+                            </div>
+                        </Link>
+
+                        {/* History Icon - Gray */}
+                        <Link href="/history" className="text-decoration-none">
+                            <div className="d-flex flex-column align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="text-muted mb-1" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span className="small text-muted">History</span>
+                            </div>
+                        </Link>
+
+                        {/* Profile Icon - Gray */}
+                        <Link href="/profile" className="text-decoration-none">
+                            <div className="d-flex flex-column align-items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="text-muted mb-1" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                </svg>
+                                <span className="small text-muted">Profile</span>
+                            </div>
+                        </Link>
                     </div>
-
-                    <Link href="/payment" className="text-decoration-none">
-                        <div className="nav-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="mb-1" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            <div className="small fw-bold">Cart</div>
-                        </div>
-                    </Link>
-
-                    <Link href="/history" className="text-decoration-none">
-                        <div className="nav-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="mb-1" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <div className="small fw-bold">History</div>
-                        </div>
-                    </Link>
-
-                    <Link href="/profile" className="text-decoration-none">
-                        <div className="nav-item">
-                            <svg xmlns="http://www.w3.org/2000/svg" className="mb-1" width="28" height="28" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                            <div className="small fw-bold">Profile</div>
-                        </div>
-                    </Link>
                 </div>
             </nav>
 
