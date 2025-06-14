@@ -60,11 +60,11 @@ export default function Profile() {
             setOriginalName(userName);
             setOriginalEmail(userEmail);
         } else if (isGuest) {
-            // Use guest data from AuthContext
-            setName("Guest User");
-            setEmail("guest@example.com");
-            setOriginalName("Guest User");
-            setOriginalEmail("guest@example.com");
+            // For guest users, set empty values
+            setName("");
+            setEmail("");
+            setOriginalName("");
+            setOriginalEmail("");
         } else if (localAuthState) {
             // Fallback to localStorage data
             if (localAuthState.type === 'user') {
@@ -77,10 +77,11 @@ export default function Profile() {
                 setOriginalName(userName);
                 setOriginalEmail(userEmail);
             } else if (localAuthState.type === 'guest') {
-                setName("Guest User");
-                setEmail("guest@example.com");
-                setOriginalName("Guest User");
-                setOriginalEmail("guest@example.com");
+                // For guest users, set empty values
+                setName("");
+                setEmail("");
+                setOriginalName("");
+                setOriginalEmail("");
             }
         }
     }, [user, isGuest, localAuthState]);
@@ -304,6 +305,11 @@ export default function Profile() {
                     transform: translateY(-1px);
                 }
                 
+                .form-control-custom::placeholder {
+                    color: #6c757d;
+                    opacity: 0.8;
+                }
+                
                 .points-display {
                     background: rgba(255, 255, 255, 0.4);
                     border-radius: 20px;
@@ -404,6 +410,7 @@ export default function Profile() {
                                     type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                    placeholder={currentIsGuest ? "Login to edit username" : "Enter your name"}
                                     className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-center form-control-custom"
                                     disabled={currentIsGuest}
                                 />
@@ -418,6 +425,7 @@ export default function Profile() {
                                     type="email"
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
+                                    placeholder={currentIsGuest ? "Login to edit email" : "Enter your email"}
                                     className="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 text-center form-control-custom"
                                     disabled={currentIsGuest}
                                 />
